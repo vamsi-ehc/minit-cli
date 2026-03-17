@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "minit-cli"
+version = "0.1.0"
+description = "A real-time machine-stats CLI dashboard with a JSON export API"
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+dependencies = [
+    "psutil>=5.9",
+    "rich>=13.0",
+    "click>=8.1",
+    "fastapi>=0.110",
+    "uvicorn[standard]>=0.29",
+]
+
+[project.scripts]
+minit = "minit_cli.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["minit_cli*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
