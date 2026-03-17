@@ -6,6 +6,7 @@ Usage
   minit serve                # start the JSON export API server
   minit stats                # print a one-shot JSON snapshot to stdout
   minit stats --pretty       # pretty-print the JSON snapshot
+  minit setup                # add minit to PATH (user + system)
 """
 
 from __future__ import annotations
@@ -104,3 +105,24 @@ def stats(pretty: bool) -> None:
     }
     indent = 2 if pretty else None
     click.echo(json.dumps(snapshot, indent=indent))
+
+
+@main.command()
+@click.option(
+    "--system",
+    is_flag=True,
+    default=False,
+    help="Also add to system-wide PATH (requires admin/root privileges).",
+)
+def setup(system: bool) -> None:
+    """Add the minit install directory to PATH.
+
+    \b
+    Linux/macOS: appends export line to ~/.bashrc and ~/.zshrc (user),
+                 and to /etc/environment (system, requires sudo).
+    Windows:     runs setx to persist PATH for the current user,
+                 and for the machine (system, requires admin shell).
+    """
+    from minit_cli._path_setup import add_to_path
+
+    add_to_path(system=system)

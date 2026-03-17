@@ -25,6 +25,7 @@ A cross-platform (Ubuntu & Windows) real-time machine-stats CLI tool with a JSON
 
 ```bash
 pip install minit-cli
+minit setup          # adds minit to PATH (user shells + optionally system)
 minit dashboard
 ```
 
@@ -102,70 +103,35 @@ minit stats              # compact JSON
 minit stats --pretty     # indented JSON
 ```
 
+### `minit setup`
+
+Add the `minit` install directory to PATH so the command is available in every
+new shell session.
+
+```
+minit setup              # user-level: ~/.bashrc and ~/.zshrc (Linux/macOS)
+                         #             HKCU\Environment via setx (Windows)
+minit setup --system     # also update system-wide PATH
+                         # Linux/macOS: /etc/environment (requires sudo)
+                         # Windows:     HKLM environment key (requires admin shell)
+```
+
 ---
 
 ## Publishing to PyPI
 
-### Prerequisites
+Publishing is handled automatically by the GitHub Actions workflow on every
+pushed tag.  To release a new version:
+
+1. Bump `version` in `pyproject.toml`
+2. Commit and push, then create a tag:
 
 ```bash
-pip install build twine
+git tag v0.2.0
+git push origin v0.2.0
 ```
 
-### 1. Bump the version
-
-Edit `pyproject.toml` and update the `version` field:
-
-```toml
-[project]
-version = "0.2.0"   # increment as needed
-```
-
-### 2. Build the distribution
-
-```bash
-python -m build
-```
-
-This produces `dist/minit_cli-<version>-py3-none-any.whl` and `dist/minit_cli-<version>.tar.gz`.
-
-### 3. Upload to PyPI
-
-```bash
-# Upload to the real PyPI index
-twine upload dist/*
-```
-
-You will be prompted for your PyPI username and password (or an API token — recommended).
-To use an API token, set your credentials once:
-
-```bash
-# ~/.pypirc  (create if it doesn't exist)
-[pypi]
-  username = __token__
-  password = pypi-<your-api-token>
-```
-
-Or pass the token inline:
-
-```bash
-twine upload -u __token__ -p pypi-<your-api-token> dist/*
-```
-
-### 4. Test on TestPyPI first (optional but recommended)
-
-```bash
-twine upload --repository testpypi dist/*
-pip install --index-url https://test.pypi.org/simple/ minit-cli
-```
-
-### 5. Verify the published package
-
-```bash
-pip install minit-cli          # install from PyPI
-minit --help
-minit dashboard
-```
+The workflow builds and uploads the package to PyPI.
 
 ---
 
