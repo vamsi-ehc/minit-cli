@@ -2,6 +2,10 @@
 
 A cross-platform (Ubuntu & Windows) real-time machine-stats CLI tool with a JSON export API.
 
+[![PyPI](https://img.shields.io/pypi/v/minit-cli)](https://pypi.org/project/minit-cli/)
+[![Python](https://img.shields.io/pypi/pyversions/minit-cli)](https://pypi.org/project/minit-cli/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
 ## Features
 
 | Feature | Details |
@@ -15,13 +19,46 @@ A cross-platform (Ubuntu & Windows) real-time machine-stats CLI tool with a JSON
 | **Real-time dashboard** | Full-screen terminal dashboard via `rich`, refreshed every 2 s |
 | **JSON export API** | FastAPI server exposing last 10 minutes of snapshots at `GET /stats` |
 
-## Quick start
+---
+
+## Install from PyPI
 
 ```bash
 pip install minit-cli
+minit dashboard
 ```
 
 > **Requirements:** Python 3.9+ on Ubuntu/Debian or Windows 10/11.
+
+---
+
+## Local setup
+
+```bash
+# 1. Clone the repo
+git clone https://github.com/vamsi-ehc/minit-cli
+cd minit-cli
+
+# 2. (Recommended) Create and activate a virtual environment
+python -m venv .venv
+source .venv/bin/activate        # Linux / macOS
+# .venv\Scripts\activate         # Windows
+
+# 3. Install dependencies
+pip install -r requirements.txt
+
+# 4. Install the package in editable mode
+pip install -e .
+
+# 5. Verify the CLI is available
+minit --help
+```
+
+### Run tests
+
+```bash
+pytest
+```
 
 ---
 
@@ -67,17 +104,67 @@ minit stats --pretty     # indented JSON
 
 ---
 
-## Development
+## Publishing to PyPI
+
+### Prerequisites
 
 ```bash
-# Clone and install in editable mode
-git clone https://github.com/vamsi-ehc/minit-cli
-cd minit-cli
-pip install -r requirements.txt
-pip install -e .
+pip install build twine
+```
 
-# Run tests
-pytest
+### 1. Bump the version
+
+Edit `pyproject.toml` and update the `version` field:
+
+```toml
+[project]
+version = "0.2.0"   # increment as needed
+```
+
+### 2. Build the distribution
+
+```bash
+python -m build
+```
+
+This produces `dist/minit_cli-<version>-py3-none-any.whl` and `dist/minit_cli-<version>.tar.gz`.
+
+### 3. Upload to PyPI
+
+```bash
+# Upload to the real PyPI index
+twine upload dist/*
+```
+
+You will be prompted for your PyPI username and password (or an API token — recommended).
+To use an API token, set your credentials once:
+
+```bash
+# ~/.pypirc  (create if it doesn't exist)
+[pypi]
+  username = __token__
+  password = pypi-<your-api-token>
+```
+
+Or pass the token inline:
+
+```bash
+twine upload -u __token__ -p pypi-<your-api-token> dist/*
+```
+
+### 4. Test on TestPyPI first (optional but recommended)
+
+```bash
+twine upload --repository testpypi dist/*
+pip install --index-url https://test.pypi.org/simple/ minit-cli
+```
+
+### 5. Verify the published package
+
+```bash
+pip install minit-cli          # install from PyPI
+minit --help
+minit dashboard
 ```
 
 ---
