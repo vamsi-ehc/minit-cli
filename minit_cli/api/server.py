@@ -17,10 +17,10 @@ from typing import Any, Dict, List
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI, HTTPException
-from fastapi.responses import JSONResponse
+from fastapi.responses import HTMLResponse, JSONResponse
 
 from minit_cli.api.store import store, INTERVAL
-from minit_cli.collectors import cpu, memory, disk, network, processes
+from minit_cli.collectors import cpu, memory, disk, network, processes, sysinfo
 
 _collector_thread: threading.Thread | None = None
 _stop_event = threading.Event()
@@ -93,6 +93,19 @@ app = FastAPI(
 # ---------------------------------------------------------------------------
 # Routes
 # ---------------------------------------------------------------------------
+
+@app.get("/", response_class=HTMLResponse)
+def dashboard() -> str:
+    """Serve the real-time web dashboard."""
+    from minit_cli.dashboard.web import HTML
+    return HTML
+
+
+@app.get("/sysinfo", response_class=JSONResponse)
+def get_sysinfo() -> Dict[str, Any]:
+    """Return static system information (hostname, OS, CPU, RAM, boot time)."""
+    return sysinfo.collect()
+
 
 @app.get("/health")
 def health() -> Dict[str, str]:

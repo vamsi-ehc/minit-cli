@@ -31,6 +31,16 @@ minit dashboard
 
 > **Requirements:** Python 3.9+ on Ubuntu/Debian or Windows 10/11.
 
+> **Note:** If `minit` is not found after install, modern pip does not run
+> post-install hooks, so the PATH may not be updated automatically.
+> Run the setup step via Python directly instead:
+>
+> ```bash
+> python -m minit_cli.cli setup
+> ```
+>
+> Then restart your shell (or run `source ~/.bashrc`) and `minit` will be available.
+
 ---
 
 ## Local setup

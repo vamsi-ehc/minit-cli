@@ -45,7 +45,7 @@ def dashboard(refresh: float) -> None:
 
 @main.command()
 @click.option("--host", default="127.0.0.1", show_default=True, help="Bind host.")
-@click.option("--port", default=8000, show_default=True, help="Bind port.")
+@click.option("--port", default=8000, show_default=True, type=int, help="Bind port.")
 @click.option(
     "--interval",
     default=10,
@@ -54,7 +54,7 @@ def dashboard(refresh: float) -> None:
     help="Stats collection interval in seconds.",
 )
 def serve(host: str, port: int, interval: int) -> None:
-    """Start the JSON export API server.
+    """Start the JSON export API server in the background.
 
     Collects stats every INTERVAL seconds and exposes them at:
 
@@ -62,6 +62,12 @@ def serve(host: str, port: int, interval: int) -> None:
       GET /stats         – last 10 minutes of snapshots
       GET /stats/latest  – most recent snapshot
       GET /health        – liveness probe
+
+    \b
+    Customize host/port/interval:
+      minit serve --port 9000
+      minit serve --host 0.0.0.0 --port 9000
+      minit serve --host 0.0.0.0 --port 9000 --interval 5
     """
     try:
         import uvicorn
@@ -69,16 +75,63 @@ def serve(host: str, port: int, interval: int) -> None:
         click.echo("uvicorn is required: pip install 'minit-cli[serve]'", err=True)
         sys.exit(1)
 
-    from minit_cli.api.server import app, start_collector
-    from minit_cli.api.store import INTERVAL as DEFAULT_INTERVAL
+    import os
+    import subprocess
 
-    # Override the collection interval before starting the server.
-    click.echo(
-        f"Starting minit API server at http://{host}:{port}  "
-        f"(collecting every {interval}s)"
+    pid_file = os.path.expanduser("~/.minit_server.pid")
+
+    # Check if a server is already running.
+    if os.path.exists(pid_file):
+        with open(pid_file) as f:
+            old_pid = f.read().strip()
+        try:
+            os.kill(int(old_pid), 0)
+            click.echo(
+                f"minit API server is already running (PID {old_pid}).\n"
+                f"  Stop it with:  kill {old_pid}"
+            )
+            return
+        except (OSError, ValueError):
+            os.remove(pid_file)
+
+    # Launch the server as a detached background process.
+    cmd = [
+        sys.executable, "-m", "minit_cli._server_worker",
+        "--host", host,
+        "--port", str(port),
+        "--interval", str(interval),
+    ]
+    proc = subprocess.Popen(
+        cmd,
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+        start_new_session=True,
     )
-    start_collector(interval=interval)
-    uvicorn.run(app, host=host, port=port, log_level="warning")
+
+    with open(pid_file, "w") as f:
+        f.write(str(proc.pid))
+
+    base_url = f"http://{host}:{port}"
+    click.echo(
+        f"minit API server started in the background (PID {proc.pid}).\n"
+        f"\n"
+        f"  Web dashboard:\n"
+        f"    {base_url}/\n"
+        f"\n"
+        f"  API endpoints:\n"
+        f"    {base_url}/stats         – last 10 min of snapshots\n"
+        f"    {base_url}/stats/latest  – most recent snapshot\n"
+        f"    {base_url}/sysinfo       – system information\n"
+        f"    {base_url}/health        – liveness probe\n"
+        f"\n"
+        f"  Customize host / port / interval:\n"
+        f"    minit serve --port 9000\n"
+        f"    minit serve --host 0.0.0.0 --port 9000\n"
+        f"    minit serve --host 0.0.0.0 --port 9000 --interval 5\n"
+        f"\n"
+        f"  Stop the server:\n"
+        f"    kill {proc.pid}"
+    )
 
 
 @main.command()
