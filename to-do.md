@@ -64,7 +64,7 @@ Items are ordered by dependency and complexity — earlier items unblock or lay 
 ---
 
 ## Phase 7 — Packaging & Ecosystem
-
+add pyinstaller and create binaries
 - [ ] **System Service Installation** — `minit install-service` generates and installs a `systemd` unit file (Linux) or Windows Service so the server starts on boot
 - [ ] **Shell Completions** — Generate tab-completion scripts for bash, zsh, and fish via Click's built-in completion support
 - [ ] **Docker Image** — Official `Dockerfile` and published image on Docker Hub / GHCR for containerized deployments
