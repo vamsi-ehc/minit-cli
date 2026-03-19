@@ -12,9 +12,6 @@ license = { text = "MIT" }
 dependencies = [
     "psutil>=5.9",
     "rich>=13.0",
-    "click>=8.1",
-    "fastapi>=0.110",
-    "uvicorn[standard]>=0.29",
 ]
 
 [project.scripts]

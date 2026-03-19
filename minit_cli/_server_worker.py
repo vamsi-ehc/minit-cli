@@ -15,11 +15,8 @@ def main() -> None:
     parser.add_argument("--interval", type=int, default=10)
     args = parser.parse_args()
 
-    import uvicorn
-    from minit_cli.api.server import app, start_collector
-
-    start_collector(interval=args.interval)
-    uvicorn.run(app, host=args.host, port=args.port, log_level="warning")
+    from minit_cli.api.server import run_server
+    run_server(host=args.host, port=args.port, interval=args.interval)
 
 
 if __name__ == "__main__":

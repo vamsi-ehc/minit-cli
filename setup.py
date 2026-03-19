@@ -1,8 +1,16 @@
-"""setuptools shim that adds a post-install PATH hook.
+"""setuptools shim – legacy post-install PATH hook.
 
-All package metadata lives in pyproject.toml.  This file exists solely to
-inject a post-install step that adds the Python bin directory to the user's
-PATH automatically after `pip install minit-cli`.
+All package metadata lives in pyproject.toml.
+
+NOTE: Modern pip (21.3+) builds a wheel via the build backend and installs it
+by copying files, so it never calls `setup.py install`.  These PostInstall /
+PostDevelop hooks therefore run only in legacy scenarios:
+  - `python setup.py install`
+  - `pip install --no-binary :all: minit-cli`
+  - `pip install -e .`  (editable / develop mode)
+
+For regular `pip install minit-cli` the PATH prompt is instead shown on the
+first interactive invocation of the `minit` command itself.
 """
 import os
 import sys

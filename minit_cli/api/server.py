@@ -1,23 +1,21 @@
-"""FastAPI application exposing last-10-minute stats as JSON.
+"""stdlib HTTP server exposing last-10-minute stats as JSON.
 
 Endpoints
 ---------
+GET /             – real-time web dashboard (HTML)
+GET /sysinfo      – static system information (hostname, OS, CPU, RAM, boot time)
+GET /health       – liveness probe
 GET /stats        – return all snapshots collected in the last 10 minutes
 GET /stats/latest – return only the most-recent snapshot
-GET /health       – liveness probe
 """
 
 from __future__ import annotations
 
 import datetime
+import json
 import threading
-import time
-from typing import Any, Dict, List
-
-from contextlib import asynccontextmanager
-
-from fastapi import FastAPI, HTTPException
-from fastapi.responses import HTMLResponse, JSONResponse
+from http.server import BaseHTTPRequestHandler, HTTPServer
+from typing import Any, Dict
 
 from minit_cli.api.store import store, INTERVAL
 from minit_cli.collectors import cpu, memory, disk, network, processes, sysinfo
@@ -72,56 +70,59 @@ def stop_collector() -> None:
 
 
 # ---------------------------------------------------------------------------
-# FastAPI lifecycle
+# HTTP handler
 # ---------------------------------------------------------------------------
 
-@asynccontextmanager
-async def lifespan(application: FastAPI):  # pragma: no cover
-    start_collector()
-    yield
-    stop_collector()
+class _Handler(BaseHTTPRequestHandler):
+    def log_message(self, format: str, *args: Any) -> None:  # silence request logs
+        pass
 
+    def _send_json(self, data: Any, status: int = 200) -> None:
+        body = json.dumps(data).encode()
+        self.send_response(status)
+        self.send_header("Content-Type", "application/json")
+        self.send_header("Content-Length", str(len(body)))
+        self.end_headers()
+        self.wfile.write(body)
 
-app = FastAPI(
-    title="minit-cli stats API",
-    description="Export last 10 minutes of machine statistics as JSON.",
-    version="0.1.0",
-    lifespan=lifespan,
-)
+    def _send_html(self, html: str) -> None:
+        body = html.encode()
+        self.send_response(200)
+        self.send_header("Content-Type", "text/html; charset=utf-8")
+        self.send_header("Content-Length", str(len(body)))
+        self.end_headers()
+        self.wfile.write(body)
+
+    def do_GET(self) -> None:
+        path = self.path.split("?")[0]
+        if path == "/":
+            from minit_cli.dashboard.web import HTML
+            self._send_html(HTML)
+        elif path == "/health":
+            self._send_json({"status": "ok"})
+        elif path == "/sysinfo":
+            self._send_json(sysinfo.collect())
+        elif path == "/stats":
+            self._send_json(store.all())
+        elif path == "/stats/latest":
+            snapshots = store.all()
+            if not snapshots:
+                self._send_json({"detail": "No data collected yet."}, status=503)
+            else:
+                self._send_json(snapshots[-1])
+        else:
+            self._send_json({"detail": "Not found."}, status=404)
 
 
 # ---------------------------------------------------------------------------
-# Routes
+# Public entry point
 # ---------------------------------------------------------------------------
 
-@app.get("/", response_class=HTMLResponse)
-def dashboard() -> str:
-    """Serve the real-time web dashboard."""
-    from minit_cli.dashboard.web import HTML
-    return HTML
-
-
-@app.get("/sysinfo", response_class=JSONResponse)
-def get_sysinfo() -> Dict[str, Any]:
-    """Return static system information (hostname, OS, CPU, RAM, boot time)."""
-    return sysinfo.collect()
-
-
-@app.get("/health")
-def health() -> Dict[str, str]:
-    return {"status": "ok"}
-
-
-@app.get("/stats", response_class=JSONResponse)
-def get_stats() -> List[Dict[str, Any]]:
-    """Return all snapshots from the last 10 minutes."""
-    return store.all()
-
-
-@app.get("/stats/latest", response_class=JSONResponse)
-def get_latest() -> Dict[str, Any]:
-    """Return the most recent snapshot."""
-    snapshots = store.all()
-    if not snapshots:
-        raise HTTPException(status_code=503, detail="No data collected yet.")
-    return snapshots[-1]
+def run_server(host: str = "127.0.0.1", port: int = 8000, interval: int = INTERVAL) -> None:
+    """Start the HTTP server (blocking). Runs the collector in a background thread."""
+    start_collector(interval=interval)
+    server = HTTPServer((host, port), _Handler)
+    try:
+        server.serve_forever()
+    finally:
+        stop_collector()

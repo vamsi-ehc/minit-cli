@@ -11,71 +11,66 @@ Usage
 
 from __future__ import annotations
 
+import argparse
 import json
+import os
+import platform
 import sys
-
-import click
+from pathlib import Path
 
 from minit_cli import __version__
 
 
-@click.group()
-@click.version_option(__version__, prog_name="minit")
-def main() -> None:
-    """minit-cli – real-time machine stats dashboard and export API."""
+def _maybe_prompt_path_setup() -> None:
+    """Offer once to add the minit bin directory to PATH if it is missing.
 
-
-@main.command()
-@click.option(
-    "--refresh",
-    default=2.0,
-    show_default=True,
-    type=float,
-    help="Dashboard refresh interval in seconds.",
-)
-def dashboard(refresh: float) -> None:
-    """Launch the real-time terminal dashboard.
-
-    Press Ctrl+C to quit.
+    Skips silently when:
+      - The bin dir is already in PATH.
+      - A sentinel file records that the user already answered.
+      - stdout/stdin are not a TTY (non-interactive context).
     """
-    from minit_cli.dashboard.live import run
+    bin_dir = str(Path(sys.executable).parent)
+    sep = ";" if platform.system() == "Windows" else ":"
+    if bin_dir in os.environ.get("PATH", "").split(sep):
+        return  # Already on PATH – nothing to do.
 
-    run(refresh_interval=refresh)
+    sentinel = Path.home() / ".config" / "minit" / ".path_setup_done"
+    if sentinel.exists():
+        return  # User already answered; don't pester again.
 
+    if not sys.stdout.isatty() or not sys.stdin.isatty():
+        return  # Non-interactive – skip the prompt.
 
-@main.command()
-@click.option("--host", default="127.0.0.1", show_default=True, help="Bind host.")
-@click.option("--port", default=8000, show_default=True, type=int, help="Bind port.")
-@click.option(
-    "--interval",
-    default=10,
-    show_default=True,
-    type=int,
-    help="Stats collection interval in seconds.",
-)
-def serve(host: str, port: int, interval: int) -> None:
-    """Start the JSON export API server in the background.
+    print(
+        f"\n[minit] The install directory '{bin_dir}' is not in your PATH.\n"
+        f"        You won't be able to run 'minit' until it is added.",
+        file=sys.stderr,
+    )
 
-    Collects stats every INTERVAL seconds and exposes them at:
+    # Persist the answer regardless of what the user picks so we only ask once.
+    sentinel.parent.mkdir(parents=True, exist_ok=True)
+    sentinel.touch()
 
-    \b
-      GET /stats         – last 10 minutes of snapshots
-      GET /stats/latest  – most recent snapshot
-      GET /health        – liveness probe
-
-    \b
-    Customize host/port/interval:
-      minit serve --port 9000
-      minit serve --host 0.0.0.0 --port 9000
-      minit serve --host 0.0.0.0 --port 9000 --interval 5
-    """
     try:
-        import uvicorn
-    except ImportError:  # pragma: no cover
-        click.echo("uvicorn is required: pip install 'minit-cli[serve]'", err=True)
-        sys.exit(1)
+        answer = input("  Add it to your PATH now? [Y/n] ").strip().lower()
+        if answer in ("", "y", "yes"):
+            from minit_cli._path_setup import add_to_path
+            add_to_path(system=False)
+        else:
+            print(
+                "  Skipped. Run 'minit setup' any time to add it later.",
+                file=sys.stderr,
+            )
+    except (KeyboardInterrupt, EOFError):
+        pass
 
-    import os
+
+def _cmd_dashboard(args: argparse.Namespace) -> None:
+    from minit_cli.dashboard.live import run
+    run(refresh_interval=args.refresh)
+
+
+def _cmd_serve(args: argparse.Namespace) -> None:
     import subprocess
 
     pid_file = os.path.expanduser("~/.minit_server.pid")
@@ -86,7 +81,7 @@ def serve(host: str, port: int, interval: int) -> None:
             old_pid = f.read().strip()
         try:
             os.kill(int(old_pid), 0)
-            click.echo(
+            print(
                 f"minit API server is already running (PID {old_pid}).\n"
                 f"  Stop it with:  kill {old_pid}"
             )
@@ -97,9 +92,9 @@ def serve(host: str, port: int, interval: int) -> None:
     # Launch the server as a detached background process.
     cmd = [
         sys.executable, "-m", "minit_cli._server_worker",
-        "--host", host,
-        "--port", str(port),
-        "--interval", str(interval),
+        "--host", args.host,
+        "--port", str(args.port),
+        "--interval", str(args.interval),
     ]
     proc = subprocess.Popen(
         cmd,
@@ -111,8 +106,8 @@ def serve(host: str, port: int, interval: int) -> None:
     with open(pid_file, "w") as f:
         f.write(str(proc.pid))
 
-    base_url = f"http://{host}:{port}"
-    click.echo(
+    base_url = f"http://{args.host}:{args.port}"
+    print(
         f"minit API server started in the background (PID {proc.pid}).\n"
         f"\n"
         f"  Web dashboard:\n"
@@ -134,18 +129,16 @@ def serve(host: str, port: int, interval: int) -> None:
     )
 
 
-@main.command()
-@click.option("--pretty", is_flag=True, default=False, help="Pretty-print JSON output.")
-def stats(pretty: bool) -> None:
-    """Print a one-shot JSON snapshot of all machine statistics to stdout."""
+def _cmd_stats(args: argparse.Namespace) -> None:
     import datetime
+    import time
+
     import psutil
 
     from minit_cli.collectors import cpu, memory, disk, network, processes
 
     # Prime psutil (first call always returns 0.0)
     psutil.cpu_percent(interval=None, percpu=True)
-    import time
     time.sleep(0.2)
 
     snapshot = {
@@ -156,26 +149,93 @@ def stats(pretty: bool) -> None:
         "network": network.collect(),
         "processes": processes.collect(),
     }
-    indent = 2 if pretty else None
-    click.echo(json.dumps(snapshot, indent=indent))
+    indent = 2 if args.pretty else None
+    print(json.dumps(snapshot, indent=indent))
 
 
-@main.command()
-@click.option(
-    "--system",
-    is_flag=True,
-    default=False,
-    help="Also add to system-wide PATH (requires admin/root privileges).",
-)
-def setup(system: bool) -> None:
-    """Add the minit install directory to PATH.
-
-    \b
-    Linux/macOS: appends export line to ~/.bashrc and ~/.zshrc (user),
-                 and to /etc/environment (system, requires sudo).
-    Windows:     runs setx to persist PATH for the current user,
-                 and for the machine (system, requires admin shell).
-    """
+def _cmd_setup(args: argparse.Namespace) -> None:
     from minit_cli._path_setup import add_to_path
+    add_to_path(system=args.system)
 
-    add_to_path(system=system)
+
+def main() -> None:
+    """minit-cli – real-time machine stats dashboard and export API."""
+    parser = argparse.ArgumentParser(
+        prog="minit",
+        description="minit-cli – real-time machine stats dashboard and export API.",
+    )
+    parser.add_argument(
+        "--version", action="version", version=f"minit {__version__}"
+    )
+
+    subparsers = parser.add_subparsers(dest="command", metavar="COMMAND")
+
+    # dashboard
+    p_dashboard = subparsers.add_parser(
+        "dashboard", help="Launch the real-time terminal dashboard. Press Ctrl+C to quit."
+    )
+    p_dashboard.add_argument(
+        "--refresh", default=2.0, type=float, metavar="SECONDS",
+        help="Dashboard refresh interval in seconds. (default: 2.0)",
+    )
+
+    # serve
+    p_serve = subparsers.add_parser(
+        "serve",
+        help="Start the JSON export API server in the background.",
+        description=(
+            "Start the JSON export API server in the background.\n\n"
+            "Collects stats every INTERVAL seconds and exposes them at:\n"
+            "  GET /stats         – last 10 minutes of snapshots\n"
+            "  GET /stats/latest  – most recent snapshot\n"
+            "  GET /health        – liveness probe"
+        ),
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+    )
+    p_serve.add_argument("--host", default="127.0.0.1", help="Bind host. (default: 127.0.0.1)")
+    p_serve.add_argument("--port", default=8000, type=int, help="Bind port. (default: 8000)")
+    p_serve.add_argument(
+        "--interval", default=10, type=int, metavar="SECONDS",
+        help="Stats collection interval in seconds. (default: 10)",
+    )
+
+    # stats
+    p_stats = subparsers.add_parser(
+        "stats", help="Print a one-shot JSON snapshot of all machine statistics to stdout."
+    )
+    p_stats.add_argument(
+        "--pretty", action="store_true", default=False, help="Pretty-print JSON output."
+    )
+
+    # setup
+    p_setup = subparsers.add_parser(
+        "setup",
+        help="Add the minit install directory to PATH.",
+        description=(
+            "Add the minit install directory to PATH.\n\n"
+            "Linux/macOS: appends export line to ~/.bashrc and ~/.zshrc (user),\n"
+            "             and to /etc/environment (system, requires sudo).\n"
+            "Windows:     runs setx to persist PATH for the current user,\n"
+            "             and for the machine (system, requires admin shell)."
+        ),
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+    )
+    p_setup.add_argument(
+        "--system", action="store_true", default=False,
+        help="Also add to system-wide PATH (requires admin/root privileges).",
+    )
+
+    _maybe_prompt_path_setup()
+
+    args = parser.parse_args()
+
+    if args.command == "dashboard":
+        _cmd_dashboard(args)
+    elif args.command == "serve":
+        _cmd_serve(args)
+    elif args.command == "stats":
+        _cmd_stats(args)
+    elif args.command == "setup":
+        _cmd_setup(args)
+    else:
+        parser.print_help()
