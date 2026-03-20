@@ -6,21 +6,21 @@ Items are ordered by dependency and complexity — earlier items unblock or lay 
 
 ## Phase 1 — Foundation & Configuration
 
-- [ ] **Configuration File** — Manage `minit` settings (host, port, refresh interval, log path, retention) via a config file at a standard path (e.g. `~/.config/minit/config.toml`)
-- [ ] **Config Command** — `minit config --path` to print the active config location; `minit config --show` to display current values; `minit config set <key> <value>` for quick edits
-- [ ] **`minit stop` Command** — Gracefully stop a running `minit serve` server by PID; currently there is no built-in stop command
-- [ ] **`minit status` Command** — Show whether the server is running, its PID, host/port, and uptime
-- [ ] **Improved `minit stats` Output** — Add `--format` flag to support `json`, `table`, and `csv` output modes for easier scripting
+- [x] **Configuration File** — Manage `minit` settings (host, port, refresh interval, log path, retention) via a config file at a standard path (e.g. `~/.config/minit/config.toml`)
+- [x] **Config Command** — `minit config --path` to print the active config location; `minit config --show` to display current values; `minit config set <key> <value>` for quick edits
+- [x] **`minit stop` Command** — Gracefully stop a running `minit serve` server by PID; currently there is no built-in stop command
+- [x] **`minit status` Command** — Show whether the server is running, its PID, host/port, and uptime
+- [x] **Improved `minit stats` Output** — Add `--format` flag to support `json`, `table`, and `csv` output modes for easier scripting
 
 ---
 
 ## Phase 2 — Metrics Logging & History
 
-- [ ] **Metrics Logging** — Persist snapshots to local log files (e.g. `~/.local/share/minit/logs/`) in JSON Lines format for easy parsing
-- [ ] **Log Rotation** — Configurable retention via `--max-days N`; automatically delete logs older than N days on startup
-- [ ] **`minit logs` Command** — View, tail (`--follow`), and filter (`--since`, `--until`) stored log files from the CLI
-- [ ] **Extended History Window** — Make the in-memory rolling window duration configurable (currently hardcoded to 10 minutes)
-- [ ] **Alerting / Thresholds** — Define CPU/RAM/Disk thresholds in config; log a warning or run a shell hook when a threshold is crossed
+- [x] **Metrics Logging** — Persist snapshots to local log files (e.g. `~/.local/share/minit/logs/`) in JSON Lines format for easy parsing
+- [x] **Log Rotation** — Configurable retention via `--max-days N`; automatically delete logs older than N days on startup
+- [x] **`minit logs` Command** — View, tail (`--follow`), and filter (`--since`, `--until`) stored log files from the CLI
+- [x] **Extended History Window** — Make the in-memory rolling window duration configurable (currently hardcoded to 10 minutes)
+- [x] **Alerting / Thresholds** — Define CPU/RAM/Disk thresholds in config; log a warning or run a shell hook when a threshold is crossed
 
 ---
 
