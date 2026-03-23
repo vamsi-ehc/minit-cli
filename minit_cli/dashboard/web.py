@@ -76,7 +76,9 @@ HTML = """<!DOCTYPE html>
     tr:hover td { background:#0d1a0d; }
     td,th { padding:5px 10px; }
     .tag { display:inline-block; padding:1px 7px; border-radius:4px;
-           font-size:10px; border:1px solid #1a3a1a; color:#4ade80; background:#0a150a; }
+           font-size:10px; border:1px solid #1a3a1a; color:#4ade80; background:#0a150a;
+           cursor:pointer; }
+    .active-tag { background:#14532d; border-color:#4ade80; color:#86efac; font-weight:600; }
     .chart-wrap { position:relative; height:120px; }
     .kv-label { font-size:10px; color:#4b5563; }
     .kv-value { font-size:12px; color:#c8d8c8; }
@@ -343,12 +345,14 @@ HTML = """<!DOCTYPE html>
 
   <!-- ══ Processes ══════════════════════════════════════════════════════════ -->
   <div id="section-proc" class="card overflow-hidden">
-    <div class="sec-header flex items-center justify-between px-4 py-3 border-b border-green-900/40"
-         onclick="toggle('sb-proc-body','arr-proc')">
-      <div class="flex items-center gap-2">
+    <div class="sec-header flex items-center justify-between px-4 py-3 border-b border-green-900/40">
+      <div class="flex items-center gap-2 cursor-pointer" onclick="toggle('sb-proc-body','arr-proc')">
         <span class="sec-arrow text-green-600 text-xs" id="arr-proc">▼</span>
         <span class="text-green-400 font-semibold text-sm tracking-wide">Top Processes</span>
-        <span class="tag">by CPU</span>
+      </div>
+      <div class="flex items-center gap-2">
+        <span id="proc-tab-cpu" class="tag active-tag" onclick="switchProcTab('cpu')">by CPU</span>
+        <span id="proc-tab-ram" class="tag" onclick="switchProcTab('ram')">by RAM</span>
       </div>
     </div>
     <div class="sec-body" id="sb-proc-body" style="max-height:700px">
@@ -678,18 +682,37 @@ function updateNetTable(interfaces) {
 }
 
 // ── Process table ─────────────────────────────────────────────────────────────
-function updateProcs(procs) {
-  $('proc-tbody').innerHTML = procs.slice(0, 15).map(p => {
-    const c = p.cpu_percent > 50 ? '#f87171' : p.cpu_percent > 20 ? '#facc15' : '#c8d8c8';
+let _allProcs = [];
+let _procTab = 'cpu';
+
+function switchProcTab(tab) {
+  _procTab = tab;
+  $('proc-tab-cpu').className = tab === 'cpu' ? 'tag active-tag' : 'tag';
+  $('proc-tab-ram').className = tab === 'ram' ? 'tag active-tag' : 'tag';
+  renderProcs();
+}
+
+function renderProcs() {
+  const sorted = [..._allProcs].sort((a, b) =>
+    _procTab === 'ram' ? b.memory_percent - a.memory_percent : b.cpu_percent - a.cpu_percent
+  );
+  $('proc-tbody').innerHTML = sorted.slice(0, 15).map(p => {
+    const cc = p.cpu_percent > 50 ? '#f87171' : p.cpu_percent > 20 ? '#facc15' : '#c8d8c8';
+    const mc = p.memory_percent > 5 ? '#f87171' : p.memory_percent > 2 ? '#facc15' : '#94a3b8';
     return `<tr class="border-b border-green-900/20">
       <td class="text-right pr-4 text-slate-500">${p.pid}</td>
       <td class="text-green-300 font-medium">${p.name}</td>
       <td class="text-slate-500">${p.username}</td>
       <td class="text-slate-500">${p.status}</td>
-      <td class="text-right tabular-nums font-bold" style="color:${c}">${p.cpu_percent.toFixed(1)}%</td>
-      <td class="text-right tabular-nums text-slate-400">${p.memory_percent.toFixed(2)}%</td>
+      <td class="text-right tabular-nums font-bold" style="color:${cc}">${p.cpu_percent.toFixed(1)}%</td>
+      <td class="text-right tabular-nums font-bold" style="color:${mc}">${p.memory_percent.toFixed(2)}%</td>
     </tr>`;
   }).join('');
+}
+
+function updateProcs(procs) {
+  _allProcs = procs;
+  renderProcs();
 }
 
 // ── I/O delta helpers ─────────────────────────────────────────────────────────
@@ -857,7 +880,7 @@ async function poll() {
   try {
     const snap = await fetch('/stats/latest').then(r => r.ok ? r.json() : null);
     if (snap) applySnapshot(snap);
-  } catch(e) {}
+  } catch(e) { console.error('poll error:', e); }
 }
 
 // ── Boot ──────────────────────────────────────────────────────────────────────

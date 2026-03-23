@@ -51,10 +51,14 @@ def _collector_loop(
 
     psutil.cpu_percent(interval=None, percpu=True)
     while not stop.is_set():
-        snapshot = _collect_once()
-        store.push(snapshot)
-        metrics_log.write_snapshot(snapshot, log_dir)
-        metrics_log.check_thresholds(snapshot, thresholds, log_dir)
+        try:
+            snapshot = _collect_once()
+            store.push(snapshot)
+            metrics_log.write_snapshot(snapshot, log_dir)
+            metrics_log.check_thresholds(snapshot, thresholds, log_dir)
+        except Exception as exc:  # noqa: BLE001
+            import traceback
+            traceback.print_exc()
         stop.wait(interval)
 
 
