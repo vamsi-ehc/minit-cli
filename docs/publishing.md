@@ -1,5 +1,9 @@
 # Publishing to PyPI via GitHub Actions
 
+<div align="center">
+  <img src="../landing/assets/logo.svg" alt="minit logo" width="80" height="80" />
+</div>
+
 Uses PyPI's **Trusted Publishers (OIDC)** — no API tokens required.
 
 ## Step 1 — Add a Trusted Publisher on PyPI

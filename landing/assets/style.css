@@ -1,0 +1,326 @@
+/* ──────────────────────────────────────────────────────────────────────── */
+/* minit Landing Page - Styles */
+/* ──────────────────────────────────────────────────────────────────────── */
+
+:root {
+  --primary: #22c55e;
+  --primary-dark: #16a34a;
+  --primary-light: #4ade80;
+  --bg-dark: #0f172a;
+  --bg-darker: #040b04;
+  --text-primary: #e2e8f0;
+  --text-secondary: #cbd5e1;
+  --text-muted: #94a3b8;
+  --border-color: #1e293b;
+  --border-light: #475569;
+}
+
+/* ──────────────────────────────────────────────────────────────────────── */
+/* Global Styles */
+/* ──────────────────────────────────────────────────────────────────────── */
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--primary) transparent;
+}
+
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: var(--primary);
+  border-radius: 4px;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-light);
+}
+
+body {
+  background: linear-gradient(135deg, #0f172a 0%, #040b04 100%);
+  color: var(--text-primary);
+}
+
+/* ──────────────────────────────────────────────────────────────────────── */
+/* Typography & Animations */
+/* ──────────────────────────────────────────────────────────────────────── */
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slide-in-left {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+/* ──────────────────────────────────────────────────────────────────────── */
+/* Navigation */
+/* ──────────────────────────────────────────────────────────────────────── */
+
+nav {
+  animation: fade-in 0.6s ease-out;
+}
+
+#nav-toggle {
+  padding: 8px;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+}
+
+#nav-toggle:hover {
+  background-color: rgba(34, 197, 94, 0.1);
+}
+
+#mobile-menu {
+  animation: slide-in-left 0.3s ease-out;
+}
+
+/* ──────────────────────────────────────────────────────────────────────── */
+/* Hero Section */
+/* ──────────────────────────────────────────────────────────────────────── */
+
+.hero-title {
+  animation: fade-in-up 0.8s ease-out;
+  background: linear-gradient(135deg, #22c55e 0%, #4ade80 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero-title span:first-child {
+  animation: fade-in-up 0.8s ease-out 0.1s backwards;
+}
+
+.hero-title span:last-child {
+  animation: fade-in-up 0.8s ease-out 0.2s backwards;
+  -webkit-text-fill-color: inherit;
+  background: none;
+}
+
+/* ──────────────────────────────────────────────────────────────────────── */
+/* Buttons */
+/* ──────────────────────────────────────────────────────────────────────── */
+
+button,
+a {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.copy-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.copy-btn:hover {
+  background-color: rgba(34, 197, 94, 0.1);
+}
+
+.copy-btn.copied {
+  color: #22c55e;
+}
+
+/* ──────────────────────────────────────────────────────────────────────── */
+/* Cards & Containers */
+/* ──────────────────────────────────────────────────────────────────────── */
+
+.group {
+  position: relative;
+}
+
+/* Scroll animations */
+.scroll-fade-in {
+  opacity: 0;
+  animation: fade-in-up 0.8s ease-out forwards;
+}
+
+/* Staggered animations for cards */
+.feature-card:nth-child(1) {
+  animation-delay: 0.1s;
+}
+
+.feature-card:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.feature-card:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+.feature-card:nth-child(4) {
+  animation-delay: 0.4s;
+}
+
+.feature-card:nth-child(5) {
+  animation-delay: 0.5s;
+}
+
+.feature-card:nth-child(6) {
+  animation-delay: 0.6s;
+}
+
+/* ──────────────────────────────────────────────────────────────────────── */
+/* Code blocks & Installation */
+/* ──────────────────────────────────────────────────────────────────────── */
+
+code {
+  font-family: 'Courier New', monospace;
+  font-size: 0.95em;
+  letter-spacing: 0.02em;
+}
+
+.bg-slate-900\/50 {
+  background-color: rgba(15, 23, 42, 0.5);
+  transition: all 0.3s ease;
+}
+
+.bg-slate-900\/50:hover {
+  background-color: rgba(15, 23, 42, 0.8);
+  border-color: rgba(34, 197, 94, 0.5);
+}
+
+/* ──────────────────────────────────────────────────────────────────────── */
+/* Links */
+/* ──────────────────────────────────────────────────────────────────────── */
+
+a {
+  text-decoration: none;
+  position: relative;
+}
+
+a[href^='#']:not(.copy-btn),
+a[href^='http']:not(.copy-btn) {
+  transition: color 0.3s ease;
+}
+
+a:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* ──────────────────────────────────────────────────────────────────────── */
+/* Smooth Scroll Behavior */
+/* ──────────────────────────────────────────────────────────────────────── */
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* ──────────────────────────────────────────────────────────────────────── */
+/* Dark mode optimizations */
+/* ──────────────────────────────────────────────────────────────────────── */
+
+@media (prefers-color-scheme: dark) {
+  body {
+    color-scheme: dark;
+  }
+}
+
+/* ──────────────────────────────────────────────────────────────────────── */
+/* Responsive Design */
+/* ──────────────────────────────────────────────────────────────────────── */
+
+@media (max-width: 768px) {
+  .hero-title {
+    font-size: 2.25rem;
+  }
+
+  h2 {
+    font-size: 2rem;
+  }
+
+  .grid-cols-1 {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .hero-title {
+    font-size: 1.875rem;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+  }
+}
+
+/* ──────────────────────────────────────────────────────────────────────── */
+/* Accessibility */
+/* ──────────────────────────────────────────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ──────────────────────────────────────────────────────────────────────── */
+/* Print styles */
+/* ──────────────────────────────────────────────────────────────────────── */
+
+@media print {
+  nav,
+  footer {
+    display: none;
+  }
+
+  body {
+    background: white;
+    color: black;
+  }
+}

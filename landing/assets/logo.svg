@@ -1,0 +1,18 @@
+<svg width="256" height="256" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg" fill="none">
+  <!-- Background (optional, remove if needed) -->
+  <rect width="256" height="256" rx="40" fill="#0f172a"/>
+  
+  <!-- Circular monitoring ring -->
+  <circle cx="128" cy="128" r="80" stroke="#22c55e" stroke-width="10" stroke-linecap="round" stroke-dasharray="420 120"/>
+
+  <!-- Real-time graph line -->
+  <path d="M64 140 L96 120 L120 140 L152 100 L192 120"
+        stroke="#22c55e"
+        stroke-width="8"
+        stroke-linecap="round"
+        stroke-linejoin="round"/>
+
+  <!-- Lightning bolt -->
+  <path d="M120 60 L90 140 H120 L105 196 L170 110 H130 L150 60 Z"
+        fill="#22c55e"/>
+</svg>

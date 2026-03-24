@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <!-- SEO Meta Tags -->
+  <title>minit - Real-Time System Monitoring & Performance Dashboard</title>
+  <meta name="description" content="minit is a lightweight, real-time system monitoring CLI tool for developers. Monitor CPU, memory, disk, network, and processes with a beautiful live dashboard." />
+  <meta name="keywords" content="system monitoring, CLI tool, performance monitoring, real-time dashboard, DevOps, SysAdmin" />
+  <meta name="author" content="minit Contributors" />
+  <meta name="robots" content="index, follow" />
+  <meta name="theme-color" content="#040b04" />
+  
+  <!-- Open Graph / Social Media -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://github.com/minit-cli/minit-cli" />
+  <meta property="og:title" content="minit - Real-Time System Monitoring for Developers" />
+  <meta property="og:description" content="Monitor your system performance with minit - a fast, beautiful, real-time monitoring CLI tool" />
+  <meta property="og:image" content="https://github.com/minit-cli/minit-cli/raw/main/demo.png" />
+  
+  <!-- Twitter Card -->
+  <meta property="twitter:card" content="summary_large_image" />
+  <meta property="twitter:title" content="minit - Real-Time System Monitoring for Developers" />
+  <meta property="twitter:description" content="Monitor your system with beautiful live dashboards" />
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="assets/logo.svg" />
+  
+  <!-- Styles -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="assets/style.css" />
+</head>
+<body class="bg-slate-950 text-slate-200 font-mono overflow-x-hidden">
+  
+  <!-- Navigation -->
+  <nav class="fixed top-0 w-full z-50 backdrop-blur-md bg-slate-950/80 border-b border-green-900/20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-16">
+        <div class="flex items-center gap-2 group cursor-pointer">
+          <img src="assets/logo.svg" alt="minit logo" class="w-8 h-8 opacity-80 group-hover:opacity-100 transition-opacity" />
+          <span class="text-xl font-bold text-green-400 tracking-widest">minit</span>
+        </div>
+        <button id="nav-toggle" class="md:hidden text-green-400 hover:text-green-300">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+          </svg>
+        </button>
+        <div id="nav-menu" class="hidden md:flex items-center gap-8">
+          <a href="#features" class="text-sm text-slate-300 hover:text-green-400 transition-colors duration-300">Features</a>
+          <a href="#problem" class="text-sm text-slate-300 hover:text-green-400 transition-colors duration-300">Problem</a>
+          <a href="#install" class="text-sm text-slate-300 hover:text-green-400 transition-colors duration-300">Install</a>
+          <a href="docs.html" class="text-sm text-slate-300 hover:text-green-400 transition-colors duration-300">Docs</a>
+          <a href="https://pypi.org/project/minit-cli/" target="_blank" class="px-4 py-2 bg-green-600 hover:bg-green-500 text-slate-950 font-bold rounded-lg transition-all duration-300 transform hover:scale-105">
+            PyPI Package
+          </a>
+        </div>
+      </div>
+    </div>
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="hidden md:hidden border-t border-green-900/20 bg-slate-950">
+      <div class="px-4 py-4 space-y-3">
+        <a href="#features" class="block text-sm text-slate-300 hover:text-green-400 transition-colors">Features</a>
+        <a href="#problem" class="block text-sm text-slate-300 hover:text-green-400 transition-colors">Problem</a>
+        <a href="#install" class="block text-sm text-slate-300 hover:text-green-400 transition-colors">Install</a>
+        <a href="docs.html" class="block text-sm text-slate-300 hover:text-green-400 transition-colors">Docs</a>
+        <a href="https://pypi.org/project/minit-cli/" target="_blank" class="block w-full text-center px-4 py-2 bg-green-600 hover:bg-green-500 text-slate-950 font-bold rounded-lg">PyPI Package</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
+    <!-- Animated background gradient -->
+    <div class="absolute inset-0 bg-gradient-to-br from-green-900/10 via-slate-950 to-slate-950 opacity-50"></div>
+    <div class="absolute top-1/4 right-0 w-96 h-96 bg-green-500/5 rounded-full blur-3xl"></div>
+    <div class="absolute bottom-1/4 left-0 w-96 h-96 bg-green-500/5 rounded-full blur-3xl"></div>
+    
+    <div class="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <h1 class="text-5xl sm:text-6xl lg:text-7xl font-bold mb-6 tracking-tight hero-title">
+        <span class="text-green-400">Real-Time System</span>
+        <br />
+        <span class="text-slate-300">Monitoring Made Simple</span>
+      </h1>
+      
+      <p class="text-lg sm:text-xl text-slate-400 mb-8 max-w-2xl mx-auto leading-relaxed">
+        minit is a lightning-fast, developer-friendly CLI tool that gives you beautiful, real-time insights into your system's performance.
+      </p>
+      
+      <div class="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+        <a href="#install" class="px-8 py-3 bg-green-600 hover:bg-green-500 text-slate-950 font-bold rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-green-900/50">
+          Get Started
+        </a>
+        <a href="https://pypi.org/project/minit-cli/" target="_blank" class="px-8 py-3 border border-green-600 text-green-400 hover:bg-green-600/10 font-bold rounded-lg transition-all duration-300">
+          View on PyPI
+        </a>
+      </div>
+
+      <!-- Demo Video Preview -->
+      <div class="mt-16 mb-12 max-w-5xl mx-auto">
+        <p class="text-sm text-slate-400 mb-4 text-center">Live Demo</p>
+        <div class="relative rounded-xl overflow-hidden border border-green-900/30 shadow-2xl hover:border-green-600/50 transition-colors duration-300 group">
+          <!-- Demo Video -->
+          <video 
+            class="w-full h-auto bg-slate-900 block transition-all duration-300 group-hover:brightness-110" 
+            controls 
+            autoplay 
+            muted 
+            loop
+            poster="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 600'%3E%3Crect fill='%230f172a' width='1200' height='600'/%3E%3C/svg%3E"
+          >
+            <source src="assets/demo.mp4" type="video/mp4">
+            Your browser doesn't support HTML5 video. Please try a modern browser.
+          </video>
+        </div>
+      </div>
+
+   
+      <!-- Installation command highlight -->
+      <div class="bg-slate-900/50 border border-green-900/30 rounded-lg p-4 max-w-2xl mx-auto backdrop-blur-sm hover:border-green-600/50 transition-colors duration-300 group">
+        <p class="text-sm text-slate-400 mb-2">Install with pip</p>
+        <div class="flex items-center gap-2 justify-center">
+          <code class="text-green-400 font-bold text-lg">pip install minit-cli</code>
+          <button class="copy-btn text-slate-400 hover:text-green-400 transition-colors" data-text="pip install minit-cli" title="Copy command">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scroll indicator -->
+    <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+      <svg class="w-6 h-6 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+      </svg>
+    </div>
+  </section>
+
+  <!-- Problem Section -->
+  <section id="problem" class="py-20 px-4 sm:px-6 lg:px-8 relative">
+    <div class="max-w-5xl mx-auto">
+      <h2 class="text-4xl sm:text-5xl font-bold mb-12 text-center">The Problem We Solve</h2>
+      
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+        <!-- Problem Card 1 -->
+        <div class="group relative p-8 bg-slate-900/40 border border-green-900/20 rounded-xl hover:border-green-600/50 transition-all duration-300 hover:bg-slate-900/60">
+          <div class="absolute inset-0 bg-gradient-to-br from-green-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl"></div>
+          <div class="relative z-10">
+            <div class="text-4xl mb-4">⚠️</div>
+            <h3 class="text-xl font-bold text-slate-200 mb-3">System Blindness</h3>
+            <p class="text-slate-400">Limited visibility into real-time system metrics. System commands are scattered and hard to use effectively.</p>
+          </div>
+        </div>
+
+        <!-- Problem Card 2 -->
+        <div class="group relative p-8 bg-slate-900/40 border border-green-900/20 rounded-xl hover:border-green-600/50 transition-all duration-300 hover:bg-slate-900/60">
+          <div class="absolute inset-0 bg-gradient-to-br from-green-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl"></div>
+          <div class="relative z-10">
+            <div class="text-4xl mb-4">📊</div>
+            <h3 class="text-xl font-bold text-slate-200 mb-3">Poor Usability</h3>
+            <p class="text-slate-400">Traditional monitoring tools are complex, heavy, and slow. IDEs and editors lack integrated performance monitoring.</p>
+          </div>
+        </div>
+
+        <!-- Problem Card 3 -->
+        <div class="group relative p-8 bg-slate-900/40 border border-green-900/20 rounded-xl hover:border-green-600/50 transition-all duration-300 hover:bg-slate-900/60">
+          <div class="absolute inset-0 bg-gradient-to-br from-green-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl"></div>
+          <div class="relative z-10">
+            <div class="text-4xl mb-4">⚡</div>
+            <h3 class="text-xl font-bold text-slate-200 mb-3">Performance Overhead</h3>
+            <p class="text-slate-400">Existing tools consume significant system resources, creating a paradox when monitoring performance.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-gradient-to-r from-green-600/10 to-green-900/10 border border-green-600/20 rounded-xl p-8 text-center">
+        <h3 class="text-2xl font-bold text-green-400 mb-3">minit's Solution</h3>
+        <p class="text-lg text-slate-300">A lightweight, beautiful, real-time monitoring CLI that developers actually want to use. Fast, responsive, and designed for the modern development workflow.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section id="features" class="py-20 px-4 sm:px-6 lg:px-8 relative">
+    <div class="max-w-5xl mx-auto">
+      <h2 class="text-4xl sm:text-5xl font-bold mb-16 text-center">Powerful Features</h2>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+        <!-- Feature 1 -->
+        <div class="group relative overflow-hidden rounded-xl bg-slate-900/40 border border-green-900/20 p-8 hover:border-green-600/50 transition-all duration-300">
+          <div class="absolute inset-0 bg-gradient-to-br from-green-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+          <div class="relative z-10">
+            <div class="text-5xl mb-4">📈</div>
+            <h3 class="text-xl font-bold text-green-400 mb-3">Live Dashboard</h3>
+            <p class="text-slate-300">Beautiful, real-time system metrics updated every second. Built with smooth animations and intuitive data visualization.</p>
+          </div>
+        </div>
+
+        <!-- Feature 2 -->
+        <div class="group relative overflow-hidden rounded-xl bg-slate-900/40 border border-green-900/20 p-8 hover:border-green-600/50 transition-all duration-300">
+          <div class="absolute inset-0 bg-gradient-to-br from-green-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+          <div class="relative z-10">
+            <div class="text-5xl mb-4">⚡</div>
+            <h3 class="text-xl font-bold text-green-400 mb-3">Lightweight</h3>
+            <p class="text-slate-300">Minimal resource footprint. Monitoring won't slow down your system. Lightweight architecture with zero bloat.</p>
+          </div>
+        </div>
+
+        <!-- Feature 3 -->
+        <div class="group relative overflow-hidden rounded-xl bg-slate-900/40 border border-green-900/20 p-8 hover:border-green-600/50 transition-all duration-300">
+          <div class="absolute inset-0 bg-gradient-to-br from-green-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+          <div class="relative z-10">
+            <div class="text-5xl mb-4">💻</div>
+            <h3 class="text-xl font-bold text-green-400 mb-3">Comprehensive Metrics</h3>
+            <p class="text-slate-300">Monitor CPU, memory, disk, network, running processes, and system information all in one place.</p>
+          </div>
+        </div>
+
+        <!-- Feature 4 -->
+        <div class="group relative overflow-hidden rounded-xl bg-slate-900/40 border border-green-900/20 p-8 hover:border-green-600/50 transition-all duration-300">
+          <div class="absolute inset-0 bg-gradient-to-br from-green-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+          <div class="relative z-10">
+            <div class="text-5xl mb-4">🌐</div>
+            <h3 class="text-xl font-bold text-green-400 mb-3">Web Dashboard</h3>
+            <p class="text-slate-300">Access metrics from your browser. Real-time updates with WebSocket support for multi-device monitoring.</p>
+          </div>
+        </div>
+
+        <!-- Feature 5 -->
+        <div class="group relative overflow-hidden rounded-xl bg-slate-900/40 border border-green-900/20 p-8 hover:border-green-600/50 transition-all duration-300">
+          <div class="absolute inset-0 bg-gradient-to-br from-green-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+          <div class="relative z-10">
+            <div class="text-5xl mb-4">🎨</div>
+            <h3 class="text-xl font-bold text-green-400 mb-3">Beautiful UI</h3>
+            <p class="text-slate-300">Designed for developers. Dark theme with smooth transitions and intuitive data presentation.</p>
+          </div>
+        </div>
+
+        <!-- Feature 6 -->
+        <div class="group relative overflow-hidden rounded-xl bg-slate-900/40 border border-green-900/20 p-8 hover:border-green-600/50 transition-all duration-300">
+          <div class="absolute inset-0 bg-gradient-to-br from-green-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+          <div class="relative z-10">
+            <div class="text-5xl mb-4">🚀</div>
+            <h3 class="text-xl font-bold text-green-400 mb-3">Easy Setup</h3>
+            <p class="text-slate-300">One-command installation. No complex configuration. Just install and run with sensible defaults.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Installation Section -->
+  <section id="install" class="py-20 px-4 sm:px-6 lg:px-8 relative">
+    <div class="max-w-4xl mx-auto">
+      <h2 class="text-4xl sm:text-5xl font-bold mb-12 text-center">Quick Start</h2>
+      
+      <div class="space-y-8">
+        <!-- Step 1 -->
+        <div class="flex gap-6">
+          <div class="flex-shrink-0 w-10 h-10 bg-green-600 rounded-full flex items-center justify-center text-slate-950 font-bold text-lg">1</div>
+          <div>
+            <h3 class="text-xl font-bold text-slate-200 mb-3">Install minit-cli</h3>
+            <div class="bg-slate-900/50 border border-green-900/30 rounded-lg p-4 backdrop-blur-sm">
+              <div class="flex items-center gap-2 justify-between">
+                <code class="text-green-400 font-bold">pip install minit-cli</code>
+                <button class="copy-btn text-slate-400 hover:text-green-400 transition-colors" data-text="pip install minit-cli" title="Copy command">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="flex gap-6">
+          <div class="flex-shrink-0 w-10 h-10 bg-green-600 rounded-full flex items-center justify-center text-slate-950 font-bold text-lg">2</div>
+          <div>
+            <h3 class="text-xl font-bold text-slate-200 mb-3">Start the Monitor</h3>
+            <div class="bg-slate-900/50 border border-green-900/30 rounded-lg p-4 backdrop-blur-sm">
+              <div class="flex items-center gap-2 justify-between">
+                <code class="text-green-400 font-bold">minit</code>
+                <button class="copy-btn text-slate-400 hover:text-green-400 transition-colors" data-text="minit" title="Copy command">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="flex gap-6">
+          <div class="flex-shrink-0 w-10 h-10 bg-green-600 rounded-full flex items-center justify-center text-slate-950 font-bold text-lg">3</div>
+          <div>
+            <h3 class="text-xl font-bold text-slate-200 mb-3">View Web Dashboard</h3>
+            <div class="bg-slate-900/50 border border-green-900/30 rounded-lg p-4 backdrop-blur-sm">
+              <div class="flex items-center gap-2 justify-between">
+                <code class="text-green-400 font-bold">http://localhost:7770</code>
+                <button class="copy-btn text-slate-400 hover:text-green-400 transition-colors" data-text="http://localhost:7770" title="Copy URL">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-16 bg-gradient-to-r from-green-600/20 to-green-900/10 border border-green-600/30 rounded-xl p-8 text-center">
+        <h3 class="text-2xl font-bold text-green-400 mb-3">Ready to Get Started?</h3>
+        <p class="text-slate-300 mb-6">Join thousands of developers using minit for system monitoring</p>
+        <a href="https://pypi.org/project/minit-cli/" target="_blank" class="inline-block px-8 py-3 bg-green-600 hover:bg-green-500 text-slate-950 font-bold rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-green-900/50">
+          Install Now on PyPI
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="border-t border-green-900/20 bg-slate-950/50 py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-5xl mx-auto">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+        <div>
+          <h3 class="text-lg font-bold text-green-400 mb-4">minit</h3>
+          <p class="text-slate-400 text-sm">Real-time system monitoring for developers.</p>
+        </div>
+        
+        <div>
+          <h4 class="text-sm font-bold text-slate-300 uppercase mb-4">Links</h4>
+          <ul class="space-y-2">
+            <li><a href="https://pypi.org/project/minit-cli/" target="_blank" class="text-sm text-slate-400 hover:text-green-400 transition-colors">PyPI Package</a></li>
+            <li><a href="#features" class="text-sm text-slate-400 hover:text-green-400 transition-colors">Features</a></li>
+            <li><a href="#install" class="text-sm text-slate-400 hover:text-green-400 transition-colors">Installation</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="text-sm font-bold text-slate-300 uppercase mb-4">Resources</h4>
+          <ul class="space-y-2">
+            <li><a href="https://github.com/minit-cli/minit-cli" target="_blank" class="text-sm text-slate-400 hover:text-green-400 transition-colors">GitHub Repository</a></li>
+            <li><a href="https://github.com/minit-cli/minit-cli/issues" target="_blank" class="text-sm text-slate-400 hover:text-green-400 transition-colors">Report Issues</a></li>
+            <li><a href="https://github.com/minit-cli/minit-cli/discussions" target="_blank" class="text-sm text-slate-400 hover:text-green-400 transition-colors">Discussions</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="border-t border-green-900/20 pt-8 text-center text-sm text-slate-400">
+        <p>&copy; 2026 minit. Built by developers, for developers.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="assets/script.js"></script>
+</body>
+</html>

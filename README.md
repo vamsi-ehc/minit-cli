@@ -1,5 +1,9 @@
 # minit-cli
 
+<div align="center">
+  <img src="landing/assets/logo.svg" alt="minit logo" width="80" height="80" />
+</div>
+
 A cross-platform (Ubuntu & Windows) real-time machine-stats CLI tool with a JSON export API, persistent metric logging, and configurable alerting.
 
 [![PyPI](https://img.shields.io/pypi/v/minit-cli)](https://pypi.org/project/minit-cli/)

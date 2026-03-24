@@ -94,7 +94,13 @@ HTML = """<!DOCTYPE html>
     <!-- mobile sidebar toggle -->
     <button class="lg:hidden text-green-700 hover:text-green-400 text-xl leading-none mr-1"
             onclick="toggleSidebar()">☰</button>
-    <span class="w-2 h-2 rounded-full bg-green-400 pulse"></span>
+    <!-- Logo SVG -->
+    <svg width="28" height="28" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg" fill="none" style="flex-shrink:0;">
+      <rect width="256" height="256" rx="40" fill="#0f172a"/>
+      <circle cx="128" cy="128" r="80" stroke="#22c55e" stroke-width="10" stroke-linecap="round" stroke-dasharray="420 120"/>
+      <path d="M64 140 L96 120 L120 140 L152 100 L192 120" stroke="#22c55e" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M120 60 L90 140 H120 L105 196 L170 110 H130 L150 60 Z" fill="#22c55e"/>
+    </svg>
     <span class="text-green-400 font-bold text-base tracking-widest">minit</span>
     <span class="text-green-900">/</span>
     <span id="hdr-hostname" class="text-slate-300 text-sm hidden sm:inline">—</span>

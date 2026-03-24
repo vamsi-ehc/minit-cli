@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <!-- SEO Meta Tags -->
+  <title>minit Documentation - Getting Started Guide</title>
+  <meta name="description" content="Complete documentation for minit system monitoring CLI. Installation, usage, API reference, and curl examples." />
+  <meta name="keywords" content="minit, documentation, API, installation, usage guide, monitoring" />
+  <meta name="author" content="minit Contributors" />
+  
+  <!-- Styles -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="assets/style.css" />
+</head>
+<body class="bg-slate-950 text-slate-200 font-mono overflow-x-hidden">
+  
+  <!-- Navigation -->
+  <nav class="fixed top-0 w-full z-50 backdrop-blur-md bg-slate-950/80 border-b border-green-900/20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-16">
+        <a href="index.html" class="flex items-center gap-2 group cursor-pointer hover:opacity-80 transition-opacity">
+          <span class="text-2xl opacity-80 group-hover:opacity-100">⚡</span>
+          <span class="text-xl font-bold text-green-400 tracking-widest">minit</span>
+        </a>
+        <button id="nav-toggle" class="md:hidden text-green-400 hover:text-green-300">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+          </svg>
+        </button>
+        <div id="nav-menu" class="hidden md:flex items-center gap-8">
+          <a href="index.html" class="text-sm text-slate-300 hover:text-green-400 transition-colors duration-300">Home</a>
+          <a href="#getting-started" class="text-sm text-slate-300 hover:text-green-400 transition-colors duration-300">Docs</a>
+          <a href="https://pypi.org/project/minit-cli/" target="_blank" class="px-4 py-2 bg-green-600 hover:bg-green-500 text-slate-950 font-bold rounded-lg transition-all duration-300">
+            PyPI
+          </a>
+        </div>
+      </div>
+    </div>
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="hidden md:hidden border-t border-green-900/20 bg-slate-950">
+      <div class="px-4 py-4 space-y-3">
+        <a href="index.html" class="block text-sm text-slate-300 hover:text-green-400 transition-colors">Home</a>
+        <a href="#getting-started" class="block text-sm text-slate-300 hover:text-green-400 transition-colors">Docs</a>
+        <a href="https://pypi.org/project/minit-cli/" target="_blank" class="block w-full text-center px-4 py-2 bg-green-600 hover:bg-green-500 text-slate-950 font-bold rounded-lg">PyPI</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="pt-20">
+    <!-- Hero Section -->
+    <section class="py-12 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-green-900/10 to-slate-950">
+      <div class="max-w-4xl mx-auto text-center">
+        <h1 class="text-4xl sm:text-5xl font-bold mb-4 text-green-400">Documentation</h1>
+        <p class="text-lg text-slate-400">Complete guide to installing and using minit</p>
+      </div>
+    </section>
+
+    <!-- Sidebar Layout -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div class="grid grid-cols-1 lg:grid-cols-4 gap-12">
+        
+        <!-- Sidebar Navigation -->
+        <aside class="lg:col-span-1">
+          <div class="sticky top-24 bg-slate-900/40 border border-green-900/20 rounded-lg p-6">
+            <h3 class="text-sm font-bold text-green-400 uppercase mb-4">Contents</h3>
+            <nav class="space-y-2">
+              <a href="#getting-started" class="block text-sm text-slate-300 hover:text-green-400 transition-colors py-2 px-3 rounded hover:bg-slate-800/50">Getting Started</a>
+              <a href="#installation" class="block text-sm text-slate-300 hover:text-green-400 transition-colors py-2 px-3 rounded hover:bg-slate-800/50">Installation</a>
+              <a href="#quick-start" class="block text-sm text-slate-300 hover:text-green-400 transition-colors py-2 px-3 rounded hover:bg-slate-800/50">Quick Start</a>
+              <a href="#usage" class="block text-sm text-slate-300 hover:text-green-400 transition-colors py-2 px-3 rounded hover:bg-slate-800/50">Usage</a>
+              <a href="#cli-options" class="block text-sm text-slate-300 hover:text-green-400 transition-colors py-2 px-3 rounded hover:bg-slate-800/50">CLI Options</a>
+              <a href="#api-reference" class="block text-sm text-slate-300 hover:text-green-400 transition-colors py-2 px-3 rounded hover:bg-slate-800/50">API Reference</a>
+              <a href="#examples" class="block text-sm text-slate-300 hover:text-green-400 transition-colors py-2 px-3 rounded hover:bg-slate-800/50">Examples</a>
+              <a href="#troubleshooting" class="block text-sm text-slate-300 hover:text-green-400 transition-colors py-2 px-3 rounded hover:bg-slate-800/50">Troubleshooting</a>
+            </nav>
+          </div>
+        </aside>
+
+        <!-- Main Content -->
+        <article class="lg:col-span-3 space-y-12">
+
+          <!-- Getting Started -->
+          <section id="getting-started">
+            <h2 class="text-3xl font-bold text-green-400 mb-6">Getting Started</h2>
+            <p class="text-slate-300 mb-4">
+              minit is a lightweight, real-time system monitoring CLI tool designed for developers. It provides beautiful live dashboards to monitor CPU, memory, disk, network, and running processes.
+            </p>
+            <div class="bg-green-600/10 border border-green-600/20 rounded-lg p-4 mb-6">
+              <p class="text-green-400 font-bold mb-2">⚡ Features:</p>
+              <ul class="text-slate-300 space-y-1 text-sm">
+                <li>✓ Real-time system metrics with live updates</li>
+                <li>✓ Beautiful terminal UI with smooth animations</li>
+                <li>✓ Web dashboard accessible via browser</li>
+                <li>✓ REST API for programmatic access</li>
+                <li>✓ Lightweight with minimal resource overhead</li>
+              </ul>
+            </div>
+          </section>
+
+          <!-- Installation -->
+          <section id="installation">
+            <h2 class="text-3xl font-bold text-green-400 mb-6">Installation</h2>
+            
+            <h3 class="text-xl font-bold text-slate-200 mb-4">Requirements</h3>
+            <ul class="text-slate-300 space-y-2 mb-6 text-sm">
+              <li>• Python 3.8 or higher</li>
+              <li>• pip (Python package manager)</li>
+              <li>• Windows, macOS, or Linux</li>
+            </ul>
+
+            <h3 class="text-xl font-bold text-slate-200 mb-4">From PyPI</h3>
+            <div class="bg-slate-900/50 border border-green-900/30 rounded-lg p-4 mb-6 overflow-x-auto">
+              <code class="text-green-400 font-bold">pip install minit-cli</code>
+            </div>
+
+            <h3 class="text-xl font-bold text-slate-200 mb-4">From Source</h3>
+            <div class="bg-slate-900/50 border border-green-900/30 rounded-lg p-4 mb-6 overflow-x-auto space-y-2">
+              <code class="text-green-400 font-bold block">git clone https://github.com/minit-cli/minit-cli.git</code>
+              <code class="text-green-400 font-bold block">cd minit-cli</code>
+              <code class="text-green-400 font-bold block">pip install -e .</code>
+            </div>
+
+            <h3 class="text-xl font-bold text-slate-200 mb-4">Verify Installation</h3>
+            <div class="bg-slate-900/50 border border-green-900/30 rounded-lg p-4 mb-6">
+              <code class="text-green-400 font-bold">minit --version</code>
+            </div>
+          </section>
+
+          <!-- Quick Start -->
+          <section id="quick-start">
+            <h2 class="text-3xl font-bold text-green-400 mb-6">Quick Start</h2>
+            
+            <h3 class="text-xl font-bold text-slate-200 mb-4">1. Start the CLI Dashboard</h3>
+            <p class="text-slate-300 mb-3">Run minit in your terminal:</p>
+            <div class="bg-slate-900/50 border border-green-900/30 rounded-lg p-4 mb-6">
+              <code class="text-green-400 font-bold">minit</code>
+            </div>
+            <p class="text-slate-400 text-sm italic mb-6">This starts the live terminal dashboard showing real-time system metrics.</p>
+
+            <h3 class="text-xl font-bold text-slate-200 mb-4">2. Access Web Dashboard</h3>
+            <p class="text-slate-300 mb-3">Open your browser and navigate to:</p>
+            <div class="bg-slate-900/50 border border-green-900/30 rounded-lg p-4 mb-6">
+              <code class="text-green-400 font-bold">http://localhost:7770</code>
+            </div>
+            <p class="text-slate-400 text-sm italic mb-6">Beautiful web interface with real-time charts and metrics.</p>
+
+            <h3 class="text-xl font-bold text-slate-200 mb-4">3. Query the API</h3>
+            <p class="text-slate-300 mb-3">Get JSON data via REST API:</p>
+            <div class="bg-slate-900/50 border border-green-900/30 rounded-lg p-4 mb-6 overflow-x-auto">
+              <code class="text-green-400 font-bold">curl http://localhost:7770/api/metrics</code>
+            </div>
+          </section>
+
+          <!-- Usage -->
+          <section id="usage">
+            <h2 class="text-3xl font-bold text-green-400 mb-6">Usage</h2>
+            
+            <h3 class="text-xl font-bold text-slate-200 mb-4">Basic Commands</h3>
+            
+            <div class="space-y-6">
+              <div class="bg-slate-900/40 border border-green-900/20 rounded-lg p-4">
+                <p class="text-green-400 font-bold mb-2">Start monitoring (terminal UI):</p>
+                <div class="bg-slate-900/50 rounded p-3 overflow-x-auto mb-2">
+                  <code class="text-slate-300">$ minit</code>
+                </div>
+                <p class="text-slate-400 text-sm">Displays live dashboard with CPU, memory, disk, network, and process information.</p>
+              </div>
+
+              <div class="bg-slate-900/40 border border-green-900/20 rounded-lg p-4">
+                <p class="text-green-400 font-bold mb-2">Start monitoring with custom port:</p>
+                <div class="bg-slate-900/50 rounded p-3 overflow-x-auto mb-2">
+                  <code class="text-slate-300">$ minit --port 8000</code>
+                </div>
+                <p class="text-slate-400 text-sm">Web dashboard available at http://localhost:8000</p>
+              </div>
+
+              <div class="bg-slate-900/40 border border-green-900/20 rounded-lg p-4">
+                <p class="text-green-400 font-bold mb-2">View all available options:</p>
+                <div class="bg-slate-900/50 rounded p-3 overflow-x-auto mb-2">
+                  <code class="text-slate-300">$ minit --help</code>
+                </div>
+              </div>
+
+              <div class="bg-slate-900/40 border border-green-900/20 rounded-lg p-4">
+                <p class="text-green-400 font-bold mb-2">Display version:</p>
+                <div class="bg-slate-900/50 rounded p-3 overflow-x-auto mb-2">
+                  <code class="text-slate-300">$ minit --version</code>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- CLI Options -->
+          <section id="cli-options">
+            <h2 class="text-3xl font-bold text-green-400 mb-6">CLI Options</h2>
+            
+            <div class="overflow-x-auto mb-6">
+              <table class="w-full text-sm">
+                <thead>
+                  <tr class="border-b border-green-900/30">
+                    <th class="text-left py-3 px-4 text-green-400 font-bold">Option</th>
+                    <th class="text-left py-3 px-4 text-green-400 font-bold">Description</th>
+                    <th class="text-left py-3 px-4 text-green-400 font-bold">Default</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="border-b border-green-900/10 hover:bg-slate-900/40">
+                    <td class="py-3 px-4 text-green-400"><code>--port</code></td>
+                    <td class="py-3 px-4 text-slate-300">Web server port</td>
+                    <td class="py-3 px-4 text-slate-400">7770</td>
+                  </tr>
+                  <tr class="border-b border-green-900/10 hover:bg-slate-900/40">
+                    <td class="py-3 px-4 text-green-400"><code>--host</code></td>
+                    <td class="py-3 px-4 text-slate-300">Server host address</td>
+                    <td class="py-3 px-4 text-slate-400">localhost</td>
+                  </tr>
+                  <tr class="border-b border-green-900/10 hover:bg-slate-900/40">
+                    <td class="py-3 px-4 text-green-400"><code>--interval</code></td>
+                    <td class="py-3 px-4 text-slate-300">Update interval in seconds</td>
+                    <td class="py-3 px-4 text-slate-400">1</td>
+                  </tr>
+                  <tr class="border-b border-green-900/10 hover:bg-slate-900/40">
+                    <td class="py-3 px-4 text-green-400"><code>--log-level</code></td>
+                    <td class="py-3 px-4 text-slate-300">Logging level (DEBUG, INFO, WARNING, ERROR)</td>
+                    <td class="py-3 px-4 text-slate-400">INFO</td>
+                  </tr>
+                  <tr class="border-b border-green-900/10 hover:bg-slate-900/40">
+                    <td class="py-3 px-4 text-green-400"><code>--no-web</code></td>
+                    <td class="py-3 px-4 text-slate-300">Disable web server (CLI only)</td>
+                    <td class="py-3 px-4 text-slate-400">-</td>
+                  </tr>
+                  <tr class="border-b border-green-900/10 hover:bg-slate-900/40">
+                    <td class="py-3 px-4 text-green-400"><code>--version</code></td>
+                    <td class="py-3 px-4 text-slate-300">Show version and exit</td>
+                    <td class="py-3 px-4 text-slate-400">-</td>
+                  </tr>
+                  <tr class="hover:bg-slate-900/40">
+                    <td class="py-3 px-4 text-green-400"><code>--help</code></td>
+                    <td class="py-3 px-4 text-slate-300">Show help message</td>
+                    <td class="py-3 px-4 text-slate-400">-</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <!-- API Reference -->
+          <section id="api-reference">
+            <h2 class="text-3xl font-bold text-green-400 mb-6">API Reference</h2>
+            <p class="text-slate-300 mb-6">minit provides a REST API for programmatic access to system metrics.</p>
+
+            <h3 class="text-xl font-bold text-slate-200 mb-4">Base URL</h3>
+            <div class="bg-slate-900/50 border border-green-900/30 rounded-lg p-4 mb-6">
+              <code class="text-green-400 font-bold">http://localhost:7770/api</code>
+            </div>
+
+            <h3 class="text-xl font-bold text-slate-200 mb-4">Endpoints</h3>
+
+            <!-- GET /metrics -->
+            <div class="bg-slate-900/40 border border-green-900/20 rounded-lg p-6 mb-6">
+              <h4 class="text-green-400 font-bold mb-4">GET /metrics</h4>
+              <p class="text-slate-300 mb-3">Get all current system metrics.</p>
+              
+              <p class="text-green-400 font-bold text-sm mb-2">Request:</p>
+              <div class="bg-slate-900/50 rounded p-3 overflow-x-auto mb-4">
+                <code class="text-slate-300">curl http://localhost:7770/api/metrics</code>
+              </div>
+
+              <p class="text-green-400 font-bold text-sm mb-2">Response (JSON):</p>
+              <div class="bg-slate-900/50 rounded p-3 overflow-x-auto text-xs">
+                <pre class="text-slate-300"><code>{
+  "cpu": {
+    "percent": 25.5,
+    "cores": 8,
+    "freq": 3400
+  },
+  "memory": {
+    "total": 16384,
+    "used": 8192,
+    "percent": 50.0
+  },
+  "disk": {
+    "total": 512000,
+    "used": 256000,
+    "percent": 50.0
+  },
+  "network": {
+    "bytes_sent": 1048576,
+    "bytes_recv": 2097152
+  },
+  "timestamp": "2026-03-24T12:34:56Z"
+}</code></pre>
+              </div>
+            </div>
+
+            <!-- GET /cpu -->
+            <div class="bg-slate-900/40 border border-green-900/20 rounded-lg p-6 mb-6">
+              <h4 class="text-green-400 font-bold mb-4">GET /cpu</h4>
+              <p class="text-slate-300 mb-3">Get CPU metrics only.</p>
+              
+              <p class="text-green-400 font-bold text-sm mb-2">Request:</p>
+              <div class="bg-slate-900/50 rounded p-3 overflow-x-auto mb-4">
+                <code class="text-slate-300">curl http://localhost:7770/api/cpu</code>
+              </div>
+
+              <p class="text-green-400 font-bold text-sm mb-2">Response:</p>
+              <div class="bg-slate-900/50 rounded p-3 overflow-x-auto text-xs">
+                <pre class="text-slate-300"><code>{
+  "percent": 25.5,
+  "cores": 8,
+  "freq": 3400,
+  "per_cpu": [12.0, 18.5, 22.3, ...]
+}</code></pre>
+              </div>
+            </div>
+
+            <!-- GET /memory -->
+            <div class="bg-slate-900/40 border border-green-900/20 rounded-lg p-6 mb-6">
+              <h4 class="text-green-400 font-bold mb-4">GET /memory</h4>
+              <p class="text-slate-300 mb-3">Get memory metrics.</p>
+              
+              <p class="text-green-400 font-bold text-sm mb-2">Request:</p>
+              <div class="bg-slate-900/50 rounded p-3 overflow-x-auto mb-4">
+                <code class="text-slate-300">curl http://localhost:7770/api/memory</code>
+              </div>
+
+              <p class="text-green-400 font-bold text-sm mb-2">Response:</p>
+              <div class="bg-slate-900/50 rounded p-3 overflow-x-auto text-xs">
+                <pre class="text-slate-300"><code>{
+  "total": 16384,
+  "available": 8192,
+  "used": 8192,
+  "free": 4096,
+  "percent": 50.0
+}</code></pre>
+              </div>
+            </div>
+
+            <!-- GET /disk -->
+            <div class="bg-slate-900/40 border border-green-900/20 rounded-lg p-6 mb-6">
+              <h4 class="text-green-400 font-bold mb-4">GET /disk</h4>
+              <p class="text-slate-300 mb-3">Get disk usage metrics for all partitions.</p>
+              
+              <p class="text-green-400 font-bold text-sm mb-2">Request:</p>
+              <div class="bg-slate-900/50 rounded p-3 overflow-x-auto mb-4">
+                <code class="text-slate-300">curl http://localhost:7770/api/disk</code>
+              </div>
+
+              <p class="text-green-400 font-bold text-sm mb-2">Response:</p>
+              <div class="bg-slate-900/50 rounded p-3 overflow-x-auto text-xs">
+                <pre class="text-slate-300"><code>{
+  "partitions": [
+    {
+      "device": "/dev/sda1",
+      "mountpoint": "/",
+      "total": 512000,
+      "used": 256000,
+      "free": 256000,
+      "percent": 50.0
+    }
+  ]
+}</code></pre>
+              </div>
+            </div>
+
+            <!-- GET /network -->
+            <div class="bg-slate-900/40 border border-green-900/20 rounded-lg p-6 mb-6">
+              <h4 class="text-green-400 font-bold mb-4">GET /network</h4>
+              <p class="text-slate-300 mb-3">Get network metrics.</p>
+              
+              <p class="text-green-400 font-bold text-sm mb-2">Request:</p>
+              <div class="bg-slate-900/50 rounded p-3 overflow-x-auto mb-4">
+                <code class="text-slate-300">curl http://localhost:7770/api/network</code>
+              </div>
+
+              <p class="text-green-400 font-bold text-sm mb-2">Response:</p>
+              <div class="bg-slate-900/50 rounded p-3 overflow-x-auto text-xs">
+                <pre class="text-slate-300"><code>{
+  "bytes_sent": 1048576,
+  "bytes_recv": 2097152,
+  "packets_sent": 5000,
+  "packets_recv": 10000,
+  "errors_in": 0,
+  "errors_out": 0
+}</code></pre>
+              </div>
+            </div>
+
+            <!-- GET /processes -->
+            <div class="bg-slate-900/40 border border-green-900/20 rounded-lg p-6 mb-6">
+              <h4 class="text-green-400 font-bold mb-4">GET /processes</h4>
+              <p class="text-slate-300 mb-3">Get list of running processes (limit: top 50 by CPU).</p>
+              
+              <p class="text-green-400 font-bold text-sm mb-2">Request:</p>
+              <div class="bg-slate-900/50 rounded p-3 overflow-x-auto mb-4">
+                <code class="text-slate-300">curl http://localhost:7770/api/processes</code>
+              </div>
+
+              <p class="text-green-400 font-bold text-sm mb-2">Response:</p>
+              <div class="bg-slate-900/50 rounded p-3 overflow-x-auto text-xs">
+                <pre class="text-slate-300"><code>{
+  "processes": [
+    {
+      "pid": 1234,
+      "name": "minit-server",
+      "cpu_percent": 12.5,
+      "memory_mb": 245,
+      "status": "running"
+    },
+    {
+      "pid": 5678,
+      "name": "chrome",
+      "cpu_percent": 8.3,
+      "memory_mb": 892,
+      "status": "running"
+    }
+  ]
+}</code></pre>
+              </div>
+            </div>
+
+            <!-- GET /system -->
+            <div class="bg-slate-900/40 border border-green-900/20 rounded-lg p-6 mb-6">
+              <h4 class="text-green-400 font-bold mb-4">GET /system</h4>
+              <p class="text-slate-300 mb-3">Get system information.</p>
+              
+              <p class="text-green-400 font-bold text-sm mb-2">Request:</p>
+              <div class="bg-slate-900/50 rounded p-3 overflow-x-auto mb-4">
+                <code class="text-slate-300">curl http://localhost:7770/api/system</code>
+              </div>
+
+              <p class="text-green-400 font-bold text-sm mb-2">Response:</p>
+              <div class="bg-slate-900/50 rounded p-3 overflow-x-auto text-xs">
+                <pre class="text-slate-300"><code>{
+  "hostname": "my-machine",
+  "os": "Linux",
+  "os_version": "5.15.0",
+  "platform": "x86_64",
+  "uptime": 1048576,
+  "boot_time": "2026-03-12T10:30:00Z"
+}</code></pre>
+              </div>
+            </div>
+          </section>
+
+          <!-- Examples -->
+          <section id="examples">
+            <h2 class="text-3xl font-bold text-green-400 mb-6">Examples</h2>
+
+            <h3 class="text-xl font-bold text-slate-200 mb-4">Monitoring CPU Usage</h3>
+            <div class="bg-slate-900/40 border border-green-900/20 rounded-lg p-4 mb-6">
+              <p class="text-slate-300 mb-3">Get real-time CPU metrics:</p>
+              <div class="bg-slate-900/50 rounded p-3 overflow-x-auto mb-3">
+                <code class="text-slate-300">curl -s http://localhost:7770/api/cpu | jq '.percent'</code>
+              </div>
+              <p class="text-slate-400 text-sm italic">Output: <code class="text-slate-300">25.5</code></p>
+            </div>
+
+            <h3 class="text-xl font-bold text-slate-200 mb-4">Checking Memory Usage</h3>
+            <div class="bg-slate-900/40 border border-green-900/20 rounded-lg p-4 mb-6">
+              <p class="text-slate-300 mb-3">Get memory percentage:</p>
+              <div class="bg-slate-900/50 rounded p-3 overflow-x-auto mb-3">
+                <code class="text-slate-300">curl -s http://localhost:7770/api/memory | jq '.percent'</code>
+              </div>
+              <p class="text-slate-400 text-sm italic">Output: <code class="text-slate-300">50.0</code></p>
+            </div>
+
+            <h3 class="text-xl font-bold text-slate-200 mb-4">Top CPU Consuming Processes</h3>
+            <div class="bg-slate-900/40 border border-green-900/20 rounded-lg p-4 mb-6">
+              <p class="text-slate-300 mb-3">Get top processes by CPU:</p>
+              <div class="bg-slate-900/50 rounded p-3 overflow-x-auto mb-3">
+                <code class="text-slate-300">curl -s http://localhost:7770/api/processes | jq '.processes[] | {name, cpu_percent}' | head -20</code>
+              </div>
+            </div>
+
+            <h3 class="text-xl font-bold text-slate-200 mb-4">Continuous Monitoring with Polling</h3>
+            <div class="bg-slate-900/40 border border-green-900/20 rounded-lg p-4 mb-6">
+              <p class="text-slate-300 mb-3">Monitor metrics every 5 seconds in bash:</p>
+              <div class="bg-slate-900/50 rounded p-3 overflow-x-auto mb-3">
+                <pre class="text-slate-300"><code>while true; do
+  curl -s http://localhost:7770/api/metrics | jq '.cpu.percent, .memory.percent'
+  sleep 5
+done</code></pre>
+              </div>
+            </div>
+
+            <h3 class="text-xl font-bold text-slate-200 mb-4">Export to File</h3>
+            <div class="bg-slate-900/40 border border-green-900/20 rounded-lg p-4 mb-6">
+              <p class="text-slate-300 mb-3">Save metrics to JSON file for analysis:</p>
+              <div class="bg-slate-900/50 rounded p-3 overflow-x-auto mb-3">
+                <code class="text-slate-300">curl -s http://localhost:7770/api/metrics > metrics_$(date +%s).json</code>
+              </div>
+            </div>
+
+            <h3 class="text-xl font-bold text-slate-200 mb-4">Python Integration</h3>
+            <div class="bg-slate-900/40 border border-green-900/20 rounded-lg p-4 mb-6">
+              <p class="text-slate-300 mb-3">Access metrics from Python:</p>
+              <div class="bg-slate-900/50 rounded p-3 overflow-x-auto mb-3">
+                <pre class="text-slate-300"><code>import requests
+import json
+
+response = requests.get('http://localhost:7770/api/metrics')
+metrics = response.json()
+print(f"CPU: {metrics['cpu']['percent']}%")
+print(f"Memory: {metrics['memory']['percent']}%")</code></pre>
+              </div>
+            </div>
+          </section>
+
+          <!-- Troubleshooting -->
+          <section id="troubleshooting">
+            <h2 class="text-3xl font-bold text-green-400 mb-6">Troubleshooting</h2>
+
+            <div class="space-y-6">
+              <div class="bg-slate-900/40 border border-green-900/20 rounded-lg p-4">
+                <h4 class="text-green-400 font-bold mb-2">❌ "Command not found: minit"</h4>
+                <p class="text-slate-300 mb-3">The package isn't installed or not in PATH.</p>
+                <p class="text-slate-400 mb-2">✓ Solution:</p>
+                <div class="bg-slate-900/50 rounded p-3 overflow-x-auto text-sm">
+                  <code class="text-slate-300">pip install --upgrade minit-cli</code>
+                </div>
+              </div>
+
+              <div class="bg-slate-900/40 border border-green-900/20 rounded-lg p-4">
+                <h4 class="text-green-400 font-bold mb-2">❌ "Port 7770 already in use"</h4>
+                <p class="text-slate-300 mb-3">Another service is using the default port.</p>
+                <p class="text-slate-400 mb-2">✓ Solution: Use a different port:</p>
+                <div class="bg-slate-900/50 rounded p-3 overflow-x-auto text-sm">
+                  <code class="text-slate-300">minit --port 8000</code>
+                </div>
+              </div>
+
+              <div class="bg-slate-900/40 border border-green-900/20 rounded-lg p-4">
+                <h4 class="text-green-400 font-bold mb-2">❌ "Connection refused" when accessing API</h4>
+                <p class="text-slate-300 mb-3">minit is not running or not listening on the expected port.</p>
+                <p class="text-slate-400 mb-2">✓ Solution: Ensure minit is running:</p>
+                <div class="bg-slate-900/50 rounded p-3 overflow-x-auto text-sm">
+                  <code class="text-slate-300">minit &amp; # Start in background</code>
+                </div>
+              </div>
+
+              <div class="bg-slate-900/40 border border-green-900/20 rounded-lg p-4">
+                <h4 class="text-green-400 font-bold mb-2">❌ "Permission denied" errors</h4>
+                <p class="text-slate-300 mb-3">Some system information requires elevated privileges.</p>
+                <p class="text-slate-400 mb-2">✓ Solution: Run with sudo (on Linux/macOS):</p>
+                <div class="bg-slate-900/50 rounded p-3 overflow-x-auto text-sm">
+                  <code class="text-slate-300">sudo minit</code>
+                </div>
+              </div>
+
+              <div class="bg-slate-900/40 border border-green-900/20 rounded-lg p-4">
+                <h4 class="text-green-400 font-bold mb-2">❌ High CPU usage on monitoring</h4>
+                <p class="text-slate-300 mb-3">Update interval is too short.</p>
+                <p class="text-slate-400 mb-2">✓ Solution: Increase interval:</p>
+                <div class="bg-slate-900/50 rounded p-3 overflow-x-auto text-sm">
+                  <code class="text-slate-300">minit --interval 5</code>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Support -->
+          <section class="mt-12 pt-8 border-t border-green-900/20">
+            <h2 class="text-2xl font-bold text-green-400 mb-4">Need Help?</h2>
+            <p class="text-slate-300 mb-4">
+              If you encounter issues or have questions not covered here:
+            </p>
+            <ul class="text-slate-300 space-y-2">
+              <li>• 🐛 <a href="https://github.com/minit-cli/minit-cli/issues" target="_blank" class="text-green-400 hover:text-green-300">Report issues on GitHub</a></li>
+              <li>• 💬 <a href="https://github.com/minit-cli/minit-cli/discussions" target="_blank" class="text-green-400 hover:text-green-300">Join discussions on GitHub</a></li>
+              <li>• 📖 <a href="https://github.com/minit-cli/minit-cli" target="_blank" class="text-green-400 hover:text-green-300">View source code on GitHub</a></li>
+              <li>• 🐍 <a href="https://pypi.org/project/minit-cli/" target="_blank" class="text-green-400 hover:text-green-300">See package on PyPI</a></li>
+            </ul>
+          </section>
+        </article>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="border-t border-green-900/20 bg-slate-950/50 py-12 px-4 sm:px-6 lg:px-8 mt-20">
+    <div class="max-w-5xl mx-auto text-center">
+      <p class="text-slate-400 text-sm">&copy; 2026 minit. Documentation for system monitoring made simple.</p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="assets/script.js"></script>
+</body>
+</html>
