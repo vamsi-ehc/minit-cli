@@ -1,0 +1,7 @@
+# robots.txt
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /.env
+
+Sitemap: https://minit-cli.vamsi-tech.org/sitemap.xml

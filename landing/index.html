@@ -3,26 +3,43 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
   
   <!-- SEO Meta Tags -->
   <title>minit - Real-Time System Monitoring & Performance Dashboard</title>
   <meta name="description" content="minit is a lightweight, real-time system monitoring CLI tool for developers. Monitor CPU, memory, disk, network, and processes with a beautiful live dashboard." />
-  <meta name="keywords" content="system monitoring, CLI tool, performance monitoring, real-time dashboard, DevOps, SysAdmin" />
+  <meta name="keywords" content="system monitoring, CLI tool, performance monitoring, real-time dashboard, DevOps, SysAdmin, terminal dashboard, process monitor, server monitoring, hardware monitoring, resource monitor, system performance, CPU monitoring, memory monitoring, disk monitoring, network monitoring, server metrics, infrastructure monitoring, system health, performance analytics, uptime monitoring, load monitoring, metrics dashboard, system stats, Linux monitoring, Windows monitoring" />
   <meta name="author" content="minit Contributors" />
   <meta name="robots" content="index, follow" />
   <meta name="theme-color" content="#040b04" />
+  <meta name="language" content="English" />
+  <meta name="revisit-after" content="7 days" />
+  <meta name="distribution" content="global" />
+  
+  <!-- Canonical URL -->
+  <link rel="canonical" href="https://minit-cli.vamsi-tech.org/" />
+  
+  <!-- Sitemap -->
+  <link rel="sitemap" type="application/xml" href="sitemap.xml" />
   
   <!-- Open Graph / Social Media -->
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://github.com/minit-cli/minit-cli" />
+  <meta property="og:url" content="https://minit-cli.vamsi-tech.org/" />
   <meta property="og:title" content="minit - Real-Time System Monitoring for Developers" />
   <meta property="og:description" content="Monitor your system performance with minit - a fast, beautiful, real-time monitoring CLI tool" />
-  <meta property="og:image" content="https://github.com/minit-cli/minit-cli/raw/main/demo.png" />
+  <meta property="og:image" content="https://minit-cli.vamsi-tech.org/assets/logo.svg" />
+  <meta property="og:image:width" content="256" />
+  <meta property="og:image:height" content="256" />
+  <meta property="og:site_name" content="minit - System Monitoring CLI" />
+  <meta property="og:locale" content="en_US" />
   
   <!-- Twitter Card -->
   <meta property="twitter:card" content="summary_large_image" />
+  <meta property="twitter:url" content="https://minit-cli.vamsi-tech.org/" />
   <meta property="twitter:title" content="minit - Real-Time System Monitoring for Developers" />
   <meta property="twitter:description" content="Monitor your system with beautiful live dashboards" />
+  <meta property="twitter:image" content="https://minit-cli.vamsi-tech.org/assets/logo.svg" />
+  <meta property="twitter:creator" content="@minit_cli" />
   
   <!-- Favicon -->
   <link rel="icon" type="image/svg+xml" href="assets/logo.svg" />
@@ -30,6 +47,63 @@
   <!-- Styles -->
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="assets/style.css" />
+  
+  <!-- Structured Data (Schema.org) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "minit",
+    "url": "https://minit-cli.vamsi-tech.org",
+    "logo": "https://minit-cli.vamsi-tech.org/assets/logo.svg",
+    "description": "Real-time system monitoring CLI tool for developers",
+    "sameAs": [
+      "https://github.com/minit-cli/minit-cli",
+      "https://twitter.com/minit_cli",
+      "https://pypi.org/project/minit-cli/"
+    ],
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "contactType": "Technical Support",
+      "url": "https://github.com/minit-cli/minit-cli/issues"
+    }
+  }
+  </script>
+  
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "minit - System Monitoring CLI",
+    "url": "https://minit-cli.vamsi-tech.org",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": {
+        "@type": "EntryPoint",
+        "urlTemplate": "https://minit-cli.vamsi-tech.org/?search={search_term_string}"
+      },
+      "query-input": "required name=search_term_string"
+    }
+  }
+  </script>
+  
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "minit",
+    "description": "A lightweight, real-time system monitoring CLI tool for developers",
+    "url": "https://minit-cli.vamsi-tech.org",
+    "applicationCategory": "SystemUtilities",
+    "operatingSystem": "Linux, Windows",
+    "downloadUrl": "https://pypi.org/project/minit-cli/",
+    "version": "1.0.0",
+    "author": {
+      "@type": "Person",
+      "name": "minit Contributors"
+    }
+  }
+  </script>
 </head>
 <body class="bg-slate-950 text-slate-200 font-mono overflow-x-hidden">
   
@@ -168,7 +242,7 @@
         <div class="group relative p-8 bg-slate-900/40 border border-green-900/20 rounded-xl hover:border-green-600/50 transition-all duration-300 hover:bg-slate-900/60">
           <div class="absolute inset-0 bg-gradient-to-br from-green-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl"></div>
           <div class="relative z-10">
-            <div class="text-4xl mb-4">⚡</div>
+            <div class="text-4xl mb-4"><svg width="48" height="48" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg" fill="none"><rect width="256" height="256" rx="40" fill="#0f172a"/><circle cx="128" cy="128" r="80" stroke="#22c55e" stroke-width="10" stroke-linecap="round" stroke-dasharray="420 120"/><path d="M64 140 L96 120 L120 140 L152 100 L192 120" stroke="#22c55e" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><path d="M120 60 L90 140 H120 L105 196 L170 110 H130 L150 60 Z" fill="#22c55e"/></svg></div>
             <h3 class="text-xl font-bold text-slate-200 mb-3">Performance Overhead</h3>
             <p class="text-slate-400">Existing tools consume significant system resources, creating a paradox when monitoring performance.</p>
           </div>
@@ -202,7 +276,7 @@
         <div class="group relative overflow-hidden rounded-xl bg-slate-900/40 border border-green-900/20 p-8 hover:border-green-600/50 transition-all duration-300">
           <div class="absolute inset-0 bg-gradient-to-br from-green-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
           <div class="relative z-10">
-            <div class="text-5xl mb-4">⚡</div>
+            <div class="text-5xl mb-4"><svg width="64" height="64" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg" fill="none"><rect width="256" height="256" rx="40" fill="#0f172a"/><circle cx="128" cy="128" r="80" stroke="#22c55e" stroke-width="10" stroke-linecap="round" stroke-dasharray="420 120"/><path d="M64 140 L96 120 L120 140 L152 100 L192 120" stroke="#22c55e" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><path d="M120 60 L90 140 H120 L105 196 L170 110 H130 L150 60 Z" fill="#22c55e"/></svg></div>
             <h3 class="text-xl font-bold text-green-400 mb-3">Lightweight</h3>
             <p class="text-slate-300">Minimal resource footprint. Monitoring won't slow down your system. Lightweight architecture with zero bloat.</p>
           </div>

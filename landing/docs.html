@@ -3,16 +3,58 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
   
   <!-- SEO Meta Tags -->
   <title>minit Documentation - Getting Started Guide</title>
   <meta name="description" content="Complete documentation for minit system monitoring CLI. Installation, usage, API reference, and curl examples." />
-  <meta name="keywords" content="minit, documentation, API, installation, usage guide, monitoring" />
+  <meta name="keywords" content="minit, documentation, API, installation, usage guide, monitoring, CLI reference, server monitoring, system monitoring API, performance metrics, resource monitoring, hardware monitoring, DevOps tools, infrastructure monitoring, system health checks" />
   <meta name="author" content="minit Contributors" />
+  <meta name="robots" content="index, follow" />
+  <meta name="language" content="English" />
+  <meta name="revisit-after" content="7 days" />
+  
+  <!-- Canonical URL -->
+  <link rel="canonical" href="https://minit-cli.vamsi-tech.org/docs.html" />
+  
+  <!-- Sitemap -->
+  <link rel="sitemap" type="application/xml" href="sitemap.xml" />
+  
+  <!-- Open Graph / Social Media -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://minit-cli.vamsi-tech.org/docs.html" />
+  <meta property="og:title" content="minit Documentation - Getting Started Guide" />
+  <meta property="og:description" content="Complete documentation for minit system monitoring CLI. Installation, usage, and API reference." />
+  <meta property="og:image" content="https://minit-cli.vamsi-tech.org/assets/logo.svg" />
+  <meta property="og:site_name" content="minit - System Monitoring CLI" />
+  
+  <!-- Twitter Card -->
+  <meta property="twitter:card" content="summary" />
+  <meta property="twitter:url" content="https://minit-cli.vamsi-tech.org/docs.html" />
+  <meta property="twitter:title" content="minit Documentation" />
+  <meta property="twitter:description" content="Complete documentation and API reference for minit" />
+  <meta property="twitter:image" content="https://minit-cli.vamsi-tech.org/assets/logo.svg" />
   
   <!-- Styles -->
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="assets/style.css" />
+  
+  <!-- Structured Data (Schema.org) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "minit Documentation",
+    "url": "https://minit-cli.vamsi-tech.org/docs.html",
+    "description": "Complete documentation for minit system monitoring CLI",
+    "isPartOf": {
+      "@type": "WebSite",
+      "name": "minit",
+      "url": "https://minit-cli.vamsi-tech.org"
+    }
+  }
+  </script>
+</head>
 </head>
 <body class="bg-slate-950 text-slate-200 font-mono overflow-x-hidden">
   
@@ -21,7 +63,7 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex justify-between items-center h-16">
         <a href="index.html" class="flex items-center gap-2 group cursor-pointer hover:opacity-80 transition-opacity">
-          <span class="text-2xl opacity-80 group-hover:opacity-100">⚡</span>
+          <img src="assets/logo.svg" alt="minit logo" class="w-8 h-8 opacity-80 group-hover:opacity-100 transition-opacity" />
           <span class="text-xl font-bold text-green-400 tracking-widest">minit</span>
         </a>
         <button id="nav-toggle" class="md:hidden text-green-400 hover:text-green-300">
@@ -89,7 +131,7 @@
               minit is a lightweight, real-time system monitoring CLI tool designed for developers. It provides beautiful live dashboards to monitor CPU, memory, disk, network, and running processes.
             </p>
             <div class="bg-green-600/10 border border-green-600/20 rounded-lg p-4 mb-6">
-              <p class="text-green-400 font-bold mb-2">⚡ Features:</p>
+              <p class="text-green-400 font-bold mb-2">Features:</p>
               <ul class="text-slate-300 space-y-1 text-sm">
                 <li>✓ Real-time system metrics with live updates</li>
                 <li>✓ Beautiful terminal UI with smooth animations</li>

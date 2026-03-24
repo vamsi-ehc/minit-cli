@@ -28,6 +28,22 @@ A cross-platform (Ubuntu & Windows) real-time machine-stats CLI tool with a JSON
 
 ---
 
+## 🌐 Website
+
+For detailed documentation and features, visit: **[https://minit-cli.vamsi-tech.org/](https://minit-cli.vamsi-tech.org/)**
+
+---
+
+## Live Demo
+
+Watch minit in action — real-time system monitoring in your terminal:
+
+[![Demo Video](https://img.shields.io/badge/watch-demo%20video-brightgreen)](https://github.com/vamsi-ehc/minit-cli/blob/main/landing/assets/demo.mp4)
+
+Or view it directly: [minit Dashboard Demo](https://github.com/vamsi-ehc/minit-cli/blob/main/landing/assets/demo.mp4)
+
+---
+
 ## Install from PyPI
 
 ```bash

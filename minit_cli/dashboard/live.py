@@ -183,6 +183,7 @@ def _make_header() -> Text:
     text.append(f"  {hostname}  ", style="bold")
     text.append(f"  {os_info}  ", style="dim")
     text.append(f"  {now}  ", style="italic")
+    text.append("  [Visit: minit-cli.vamsi-tech.org]  ", style="dim cyan")
     return text
 
 

@@ -110,6 +110,9 @@ HTML = """<!DOCTYPE html>
     <span id="hdr-uptime" class="text-green-600 hidden sm:inline">up —</span>
     <span id="hdr-updated" class="text-slate-600 hidden sm:inline">—</span>
     <span id="hdr-clock" class="text-green-400 font-bold tabular-nums">—</span>
+    <!-- Website link -->
+    <a href="https://minit-cli.vamsi-tech.org/" target="_blank" rel="noopener noreferrer"
+       class="hidden md:inline text-green-500 hover:text-green-300 transition-colors">docs ↗</a>
     <!-- Refresh slider -->
     <div class="flex items-center gap-2 border-l border-green-900/50 pl-3">
       <span class="text-slate-600 hidden sm:inline">Refresh</span>
