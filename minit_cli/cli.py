@@ -394,8 +394,8 @@ def main() -> None:
         "dashboard", help="Launch the real-time terminal dashboard. Press Ctrl+C to quit."
     )
     p_dashboard.add_argument(
-        "--refresh", default=None, type=float, metavar="SECONDS",
-        help="Dashboard refresh interval in seconds. (default: from config, 2.0)",
+        "--refresh", default=1.2, type=float, metavar="SECONDS",
+        help="Dashboard refresh interval in seconds. (default: 1.2)",
     )
 
     # serve

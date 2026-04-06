@@ -17,8 +17,8 @@ import threading
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from typing import Any, Dict
 
-from minit_cli.api.store import StatsStore, INTERVAL, WINDOW_SECONDS
-from minit_cli.collectors import cpu, memory, disk, network, processes, sysinfo
+from minit_cli.api.store import store, INTERVAL
+from minit_cli.collectors import cpu, memory, disk, network, processes, sysinfo, users
 
 _collector_thread: threading.Thread | None = None
 _stop_event = threading.Event()
@@ -36,6 +36,7 @@ def _collect_once() -> Dict[str, Any]:
         "disk": disk.collect(),
         "network": network.collect(),
         "processes": processes.collect(),
+        "users": users.collect(),
     }
 
 

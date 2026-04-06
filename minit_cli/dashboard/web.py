@@ -156,6 +156,10 @@ HTML = """<!DOCTYPE html>
     <div class="nav-link" id="nav-proc" onclick="navTo('proc')">
       <span class="nav-dot"></span>Processes
     </div>
+    <div class="nav-link" id="nav-users" onclick="navTo('users')">
+      <span class="nav-dot"></span>Users
+      <span class="ml-auto text-xs tabular-nums" id="sb-users">—</span>
+    </div>
   </div>
 
   <!-- mini stats at bottom -->
@@ -260,7 +264,8 @@ HTML = """<!DOCTYPE html>
     </div>
   </div>
 
-  <!-- ══ CPU ════════════════════════════════════════════════════════════════ -->
+  <!-- ══ CPU + Memory (side by side) ══════════════════════════════════════ -->
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-3">
   <div id="section-cpu" class="card overflow-hidden">
     <div class="sec-header flex items-center justify-between px-4 py-3 border-b border-green-900/40"
          onclick="toggle('sb-cpu-body','arr-cpu')">
@@ -297,6 +302,7 @@ HTML = """<!DOCTYPE html>
       </div>
     </div>
   </div>
+  </div><!-- /cpu-mem-grid -->
 
   <!-- ══ Network ════════════════════════════════════════════════════════════ -->
   <div id="section-net" class="card overflow-hidden">
@@ -354,17 +360,16 @@ HTML = """<!DOCTYPE html>
 
   <!-- ══ Processes ══════════════════════════════════════════════════════════ -->
   <div id="section-proc" class="card overflow-hidden">
-    <div class="sec-header flex items-center justify-between px-4 py-3 border-b border-green-900/40">
-      <div class="flex items-center gap-2 cursor-pointer" onclick="toggle('sb-proc-body','arr-proc')">
-        <span class="sec-arrow text-green-600 text-xs" id="arr-proc">▼</span>
+    <div class="flex items-center justify-between px-4 py-3 border-b border-green-900/40">
+      <div class="flex items-center gap-2">
         <span class="text-green-400 font-semibold text-sm tracking-wide">Top Processes</span>
       </div>
-      <div class="flex items-center gap-2">
-        <span id="proc-tab-cpu" class="tag active-tag" onclick="switchProcTab('cpu')">by CPU</span>
-        <span id="proc-tab-ram" class="tag" onclick="switchProcTab('ram')">by RAM</span>
-      </div>
+      <button id="proc-sort-btn" onclick="toggleProcSort()"
+              class="tag cursor-pointer hover:bg-green-900/40 transition-colors select-none">
+        by CPU%
+      </button>
     </div>
-    <div class="sec-body" id="sb-proc-body" style="max-height:700px">
+    <div id="sb-proc-body" style="max-height:700px; overflow:hidden">
       <div class="px-4 py-3 overflow-x-auto">
         <table class="w-full text-xs">
           <thead>
@@ -379,6 +384,36 @@ HTML = """<!DOCTYPE html>
           </thead>
           <tbody id="proc-tbody"></tbody>
         </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ Logged-in Users ═══════════════════════════════════════════════════ -->
+  <div id="section-users" class="card overflow-hidden">
+    <div class="sec-header flex items-center justify-between px-4 py-3 border-b border-green-900/40"
+         onclick="toggle('sb-users-body','arr-users')">
+      <div class="flex items-center gap-2">
+        <span class="sec-arrow text-green-600 text-xs" id="arr-users">▼</span>
+        <span class="text-green-400 font-semibold text-sm tracking-wide">Logged-in Users</span>
+        <span class="tag ml-2" id="users-count-tag">0</span>
+      </div>
+    </div>
+    <div class="sec-body" id="sb-users-body" style="max-height:400px">
+      <div class="px-4 py-3 overflow-x-auto">
+        <table class="w-full text-xs" id="users-table">
+          <thead>
+            <tr class="text-slate-600 border-b border-green-900/30">
+              <th class="text-left pb-1">User</th>
+              <th class="text-left pb-1">Terminal</th>
+              <th class="text-left pb-1">Host</th>
+              <th class="text-left pb-1">Since</th>
+            </tr>
+          </thead>
+          <tbody id="users-tbody"></tbody>
+        </table>
+        <div id="users-empty" class="text-slate-600 text-xs py-2 hidden">
+          No users currently logged in.
+        </div>
       </div>
     </div>
   </div>
@@ -401,7 +436,7 @@ const $  = id => document.getElementById(id);
 const $$ = sel => document.querySelectorAll(sel);
 
 // ── Sidebar ───────────────────────────────────────────────────────────────────
-const SECTIONS = ['overview','cpu','mem','net','disk','proc'];
+const SECTIONS = ['overview','cpu','mem','net','disk','proc','users'];
 
 function toggleSidebar(force) {
   const sb = $('sidebar');
@@ -691,37 +726,60 @@ function updateNetTable(interfaces) {
 }
 
 // ── Process table ─────────────────────────────────────────────────────────────
-let _allProcs = [];
-let _procTab = 'cpu';
+let _procSort = 'cpu';
 
-function switchProcTab(tab) {
-  _procTab = tab;
-  $('proc-tab-cpu').className = tab === 'cpu' ? 'tag active-tag' : 'tag';
-  $('proc-tab-ram').className = tab === 'ram' ? 'tag active-tag' : 'tag';
-  renderProcs();
+function toggleProcSort() {
+  _procSort = _procSort === 'cpu' ? 'mem' : 'cpu';
+  $('proc-sort-btn').textContent = _procSort === 'cpu' ? 'by CPU%' : 'by Mem%';
+  if (_lastProcs) updateProcs(_lastProcs);
 }
 
-function renderProcs() {
-  const sorted = [..._allProcs].sort((a, b) =>
-    _procTab === 'ram' ? b.memory_percent - a.memory_percent : b.cpu_percent - a.cpu_percent
+let _lastProcs = null;
+
+function updateProcs(procs) {
+  _lastProcs = procs;
+  const sorted = [...procs].sort((a, b) =>
+    _procSort === 'cpu'
+      ? b.cpu_percent - a.cpu_percent
+      : b.memory_percent - a.memory_percent
   );
   $('proc-tbody').innerHTML = sorted.slice(0, 15).map(p => {
-    const cc = p.cpu_percent > 50 ? '#f87171' : p.cpu_percent > 20 ? '#facc15' : '#c8d8c8';
-    const mc = p.memory_percent > 5 ? '#f87171' : p.memory_percent > 2 ? '#facc15' : '#94a3b8';
+    const c  = p.cpu_percent    > 50 ? '#f87171' : p.cpu_percent    > 20 ? '#facc15' : '#c8d8c8';
+    const mc = p.memory_percent > 10 ? '#f87171' : p.memory_percent >  5 ? '#facc15' : '#86efac';
     return `<tr class="border-b border-green-900/20">
       <td class="text-right pr-4 text-slate-500">${p.pid}</td>
       <td class="text-green-300 font-medium">${p.name}</td>
       <td class="text-slate-500">${p.username}</td>
       <td class="text-slate-500">${p.status}</td>
-      <td class="text-right tabular-nums font-bold" style="color:${cc}">${p.cpu_percent.toFixed(1)}%</td>
+      <td class="text-right tabular-nums font-bold" style="color:${c}">${p.cpu_percent.toFixed(1)}%</td>
       <td class="text-right tabular-nums font-bold" style="color:${mc}">${p.memory_percent.toFixed(2)}%</td>
     </tr>`;
   }).join('');
 }
 
-function updateProcs(procs) {
-  _allProcs = procs;
-  renderProcs();
+// ── Users table ───────────────────────────────────────────────────────────────
+function updateUsers(users) {
+  const tag   = $('users-count-tag');
+  const tbody = $('users-tbody');
+  const empty = $('users-empty');
+  const table = $('users-table');
+  if (tag) tag.textContent = users.length;
+  if ($('sb-users')) $('sb-users').textContent = users.length;
+  if (!users.length) {
+    if (tbody) tbody.innerHTML = '';
+    if (table) table.classList.add('hidden');
+    if (empty) empty.classList.remove('hidden');
+    return;
+  }
+  if (table) table.classList.remove('hidden');
+  if (empty) empty.classList.add('hidden');
+  tbody.innerHTML = users.map(u => `
+    <tr class="border-b border-green-900/20">
+      <td class="text-green-300 font-medium">${u.name}</td>
+      <td class="text-slate-500">${u.terminal}</td>
+      <td class="text-slate-500">${u.host}</td>
+      <td class="text-slate-500 tabular-nums">${u.started}</td>
+    </tr>`).join('');
 }
 
 // ── I/O delta helpers ─────────────────────────────────────────────────────────
@@ -822,6 +880,7 @@ function applySnapshot(snap, chartPush = true) {
   updateDisks(disk.partitions);
   updateNetTable(net.interfaces);
   updateProcs(proc.processes);
+  if (snap.users) updateUsers(snap.users.users || []);
 }
 
 // ── Sysinfo ───────────────────────────────────────────────────────────────────
